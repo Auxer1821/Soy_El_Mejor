@@ -1,0 +1,2 @@
+[INFO] 00:46:20:261 Logs-memoria-cpu/(15180:15185): PID: 2 - Acción: ESCRIBIR - Dirección física: 124 - Tamaño: 4 - Origen: CPU
+[INFO] 00:46:20:305 Logs-memoria-cpu/(15180:15185): PID: 2 - Acción: LEER - Dirección física: 124 - Tamaño: 4 - Origen: CPU

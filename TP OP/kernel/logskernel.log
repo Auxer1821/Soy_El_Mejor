@@ -1,0 +1,11 @@
+[INFO] 00:45:56:711 Log-kernel/(15183:15183): Lei los siguientes datos: 
+ Puerto Consola: 8000 
+Puerto CPU: 8001 	 IP CPU: 127.0.0.1 
+ Puerto File System: 8002 	 IP File System: 127.0.0.1 
+ Puerto Memoria: 8003 	 IP Memoria: 127.0.0.1 
+
+[INFO] 00:45:56:712 Log-kernel/(15183:15183): Se creo el socket para la conexion con la CPU.
+[INFO] 00:45:56:712 Log-kernel/(15183:15183): Se creo el socket para la conexion con la FileSystem.
+[INFO] 00:45:56:712 Log-kernel/(15183:15183): Hanshake Kernel -> FileSystem realizado correctamente
+[INFO] 00:45:56:713 Log-kernel/(15183:15183): Se creó el socket con memoria
+[INFO] 00:45:56:713 Log-kernel/(15183:15183): Hanshake Kernel -> Memoria realizado correctamente

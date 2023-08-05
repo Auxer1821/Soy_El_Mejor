@@ -1,0 +1,14 @@
+[INFO] 00:45:50:871 Log-memoria/(15180:15180): Puerto escuchado: 8003 
+ tamanio_memoria: 512 
+ tamanio_segmento_0: 128 
+ cant_segmentos: 16 
+ retardo_memoria: 1000 
+ retardo_compactacion: 30000 
+ algoritmo_asignacion: FIRST 
+
+[INFO] 00:45:50:872 Log-memoria/(15180:15180): Servidor listo para recibir al CPU
+[INFO] 00:45:53:007 Log-memoria/(15180:15180): Se conecto un cliente!
+[INFO] 00:45:53:007 Log-memoria/(15180:15180): Servidor listo para recibir al File System
+[INFO] 00:45:54:663 Log-memoria/(15180:15180): Se conecto un cliente!
+[INFO] 00:45:54:664 Log-memoria/(15180:15180): Servidor listo para recibir al Kernel
+[INFO] 00:45:56:713 Log-memoria/(15180:15180): Se conecto un cliente!

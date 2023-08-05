@@ -1,0 +1,8 @@
+[INFO] 00:46:02:879 Log-kernel-hilo5/(15183:15190): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:46:03:880 Log-kernel-hilo5/(15183:15190): Fin de Proceso: Finaliza el proceso 0 - Motivo: FIN_INVALID_RESOURCE
+[INFO] 00:46:10:895 Log-kernel-hilo5/(15183:15190): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:46:11:895 Log-kernel-hilo5/(15183:15190): Fin de Proceso: Finaliza el proceso 1 - Motivo: FIN_INVALID_RESOURCE
+[INFO] 00:46:18:260 Log-kernel-hilo5/(15183:15190): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:46:21:306 Log-kernel-hilo5/(15183:15190): Fin de Proceso: Finaliza el proceso 2 - Motivo: FIN_SEG_FAULT
+[INFO] 00:46:26:138 Log-kernel-hilo5/(15183:15190): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 00:46:26:139 Log-kernel-hilo5/(15183:15190): Fin de Proceso: Finaliza el proceso 3 - Motivo: OUT_OF_MEMORY

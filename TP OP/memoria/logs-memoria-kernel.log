@@ -1,0 +1,5 @@
+[INFO] 00:46:03:880 Log-memoria-kernel/(15180:15184): Eliminación de Proceso PID: 0
+[INFO] 00:46:11:895 Log-memoria-kernel/(15180:15184): Eliminación de Proceso PID: 1
+[INFO] 00:46:21:306 Log-memoria-kernel/(15180:15184): Eliminación de Proceso PID: 2
+[INFO] 00:46:26:138 Log-memoria-kernel/(15180:15184): PID: 3 - Crear Segmento: 1 - Base: 128 - TAMAÑO: 256
+[INFO] 00:46:26:139 Log-memoria-kernel/(15180:15184): Eliminación de Proceso PID: 3

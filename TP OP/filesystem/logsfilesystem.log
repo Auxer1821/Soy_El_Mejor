@@ -1,0 +1,10 @@
+[INFO] 00:45:54:663 Log-FILESYSTEM/(15182:15182): Lei los siguientes datos: 
+ Puerto Kernel: 8002 
+Puerto Memoria: 8003 	 IP Memoria: 127.0.0.1 
+Y con un retardo de acceso bloque bloque de: 15000 
+
+[INFO] 00:45:54:664 Log-FILESYSTEM/(15182:15182): Se creo la conexion con la Memoria.
+[INFO] 00:45:54:664 Log-FILESYSTEM/(15182:15182): Servidor listo para recibir al kernel
+[INFO] 00:45:56:712 Log-FILESYSTEM/(15182:15182): Se conecto un cliente!
+[INFO] 00:45:56:712 Log-FILESYSTEM/(15182:15182): Abrir Archivo: Consoles
+[INFO] 00:45:56:712 Log-FILESYSTEM/(15182:15182): Abrir Archivo: Videogames

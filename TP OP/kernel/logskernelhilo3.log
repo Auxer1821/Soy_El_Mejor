@@ -1,0 +1,14 @@
+[INFO] 00:46:02:879 Log-kernel-hilo3/(15183:15192): Cola Ready FIFO: 0 - 
+[INFO] 00:46:02:879 Log-kernel-hilo3/(15183:15192): PID: 0 - Estado Anterior: READY - Estado Actual: RUNNING
+[INFO] 00:46:03:880 Log-kernel-hilo3/(15183:15192): PID: 0 - Estado Anterior: RUNNING - Estado Actual: EXIT
+[INFO] 00:46:10:895 Log-kernel-hilo3/(15183:15192): Cola Ready FIFO: 1 - 
+[INFO] 00:46:10:895 Log-kernel-hilo3/(15183:15192): PID: 1 - Estado Anterior: READY - Estado Actual: RUNNING
+[INFO] 00:46:11:895 Log-kernel-hilo3/(15183:15192): PID: 1 - Estado Anterior: RUNNING - Estado Actual: EXIT
+[INFO] 00:46:18:260 Log-kernel-hilo3/(15183:15192): Cola Ready FIFO: 2 - 
+[INFO] 00:46:18:260 Log-kernel-hilo3/(15183:15192): PID: 2 - Estado Anterior: READY - Estado Actual: RUNNING
+[INFO] 00:46:21:306 Log-kernel-hilo3/(15183:15192): PID: 2 - Estado Anterior: RUNNING - Estado Actual: EXIT
+[INFO] 00:46:26:138 Log-kernel-hilo3/(15183:15192): Cola Ready FIFO: 3 - 
+[INFO] 00:46:26:138 Log-kernel-hilo3/(15183:15192): PID: 3 - Estado Anterior: READY - Estado Actual: RUNNING
+[INFO] 00:46:26:139 Log-kernel-hilo3/(15183:15192): PID: 3 - Crear Segmento - Id: 1 - Tamaño: 256
+[INFO] 00:46:26:139 Log-kernel-hilo3/(15183:15192): PID: 3 - Crear Segmento - Id: 2 - Tamaño: 256
+[INFO] 00:46:26:139 Log-kernel-hilo3/(15183:15192): PID: 3 - Estado Anterior: RUNNING - Estado Actual: EXIT

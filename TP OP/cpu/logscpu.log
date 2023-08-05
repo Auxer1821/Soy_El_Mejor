@@ -1,0 +1,25 @@
+[INFO] 00:45:53:007 Log-CPU/(15181:15181): Lei los siguientes datos: 
+ Puerto Kernel: 8001 
+Puerto Memoria: 8003 	 IP Memoria: 127.0.0.1 
+
+[INFO] 00:45:53:007 Log-CPU/(15181:15181): Se creo el socket para la conexion con la Memoria.
+[INFO] 00:45:53:008 Log-CPU/(15181:15181): Servidor listo para recibir al kernel
+[INFO] 00:45:56:712 Log-CPU/(15181:15181): Se conecto un cliente!
+[INFO] 00:46:02:879 Log-CPU/(15181:15181): PID: 0 - Ejecutando: SET - AX HOLA
+[INFO] 00:46:03:879 Log-CPU/(15181:15181): PID: 0 - Ejecutando: WAIT - LA_TERCERA_DE_FRANCIA
+[ERROR] 00:46:03:880 Log-CPU/(15181:15181): ERROR EN PID: 0 - WAIT DE RECURSO NO EXISTENTE
+[INFO] 00:46:10:895 Log-CPU/(15181:15181): PID: 1 - Ejecutando: SET - AX HOLA
+[INFO] 00:46:11:895 Log-CPU/(15181:15181): PID: 1 - Ejecutando: SIGNAL - EL_CUARTO_DE_FRANCIA
+[ERROR] 00:46:11:895 Log-CPU/(15181:15181): ERROR EN PID: 1 - SIGNAL DE RECURSO NO EXISTENTE
+[INFO] 00:46:18:260 Log-CPU/(15181:15181): PID: 2 - Ejecutando: SET - AX HOLA
+[INFO] 00:46:19:260 Log-CPU/(15181:15181): PID: 2 - Ejecutando: SET - RAX MappaLlegaEl2c23
+[INFO] 00:46:20:260 Log-CPU/(15181:15181): PID: 2 - Ejecutando: MOV_OUT - AX 124
+[INFO] 00:46:20:261 Log-CPU/(15181:15181): PID:2 - MOV_OUT  HOLA
+[INFO] 00:46:20:261 Log-CPU/(15181:15181): PID: 2 - Acción: ESCRIBIR - Segmento: 0 - Dirección Física: 124 - Valor: HOLA
+[INFO] 00:46:20:261 Log-CPU/(15181:15181): PID: 2 - Ejecutando: MOV_IN - BX 124
+[INFO] 00:46:20:305 Log-CPU/(15181:15181): PID:2 - MOV_IN - Enviando direccion fisica: 124
+[INFO] 00:46:21:305 Log-CPU/(15181:15181): PID: 2 - Acción: LEER - Segmento: 0 - Dirección Física: 124 - Valor: HOLA
+[INFO] 00:46:21:306 Log-CPU/(15181:15181): PID: 2 - Ejecutando: MOV_OUT - RAX 120
+[ERROR] 00:46:21:306 Log-CPU/(15181:15181): PID: 2 - Error SEG_FAULT- Segmento: 0 - Offset: 120 - Tamaño: 16
+[INFO] 00:46:26:138 Log-CPU/(15181:15181): PID: 3 - Ejecutando: CREATE_SEGMENT - 1 256
+[INFO] 00:46:26:139 Log-CPU/(15181:15181): PID: 3 - Ejecutando: CREATE_SEGMENT - 2 256
