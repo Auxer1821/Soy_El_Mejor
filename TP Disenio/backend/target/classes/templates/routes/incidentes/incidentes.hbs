@@ -1,0 +1,107 @@
+<style>
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .carousel-item {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .carousel-inner {
+        position: relative;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        font-size: 30px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-control-prev:hover, .carousel-control-next:hover {
+        color: rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-indicators li {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-indicators .active {
+        background-color: #007bff;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Registro de Incidentes</h1>
+        <div id="incidentes-grid" class="row row-cols-1 row-cols-md-3 g-4">
+            {{#each incidentes}}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-header text-center">
+                            Incidente #{{@index}}
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Descripción:</strong> {{this.descripcion}}</p>
+                            <p><strong>Fecha:</strong> {{this.fecha}}</p>
+                            <p><strong>Estado:</strong> {{this.estado}}</p>
+
+                            {{#if this.visitas}}
+                                <h5 class="mt-3">Visitas Asociadas:</h5>
+                                <!-- Carrusel para Visitas -->
+                                <div id="carouselVisitas{{@index}}" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        {{#each this.visitas}}
+                                            <div class="carousel-item {{#if @first}}active{{/if}}">
+                                                <div class="visita-card">
+                                                    <p><strong>Descripción:</strong> {{this.descripcion}}</p>
+                                                    <p><strong>Estado:</strong> {{this.estado}}</p>
+                                                    <p><strong>Fecha:</strong> {{this.fecha}}</p>
+                                                    <p><strong>Técnico CUIL:</strong> {{this.tecnico_cuil}}</p>
+                                                    {{#if this.foto_path}}
+                                                        <p><strong>Foto:</strong></p>
+                                                        <img src="{{this.foto_path}}" alt="Foto de la visita" class="img-fluid rounded">
+                                                    {{/if}}
+                                                </div>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselVisitas{{@index}}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselVisitas{{@index}}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            {{else}}
+                                <p class="text-muted">No hay visitas asociadas.</p>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/partial}}
+{{>base}}

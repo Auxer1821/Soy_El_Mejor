@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solidarity Fridge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-wj0V1ZhHx1SkOtbJ8irFmjFG/l/wfJoJvvD8/cg8SniXUnbY58cYoFuGX9xI6c30" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-VLwEjwrWvdI+G5hYzC1jJ/N4E3fnqMdqrBdJh4pe1WgFL4pxXflFSkW5frYil4Kk" crossorigin=""></script>
+    <link href="/css/globals.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/mapView/map.css">
+    <link rel="stylesheet" href="/css/shared/header.css">
+    <link rel="stylesheet" href="/css/shared/footer.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  {{> shared/header}}
+
+  <main class="flex-grow-1 min-vh-100">
+      {{#block "contenido"}}
+      {{/block}}
+  </main>
+
+  {{> shared/footer}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center">
+        <label for="seleccionar_locacion" class="me-3">Heladeras:</label>
+        <select class="form-select mx-auto" name="seleccionar_locacion" id="seleccionar_locacion" style="min-width: 300px; margin-left: 100px; margin-right: 100px;">
+            <option value="-1">Selecciona una heladera</option>
+        </select>
+    </div>
+
+
+    <div id="map" class="w-100 vh-100"></div>
+
+    <!-- Modal Suscribirse a heladera -->
+    <div class="modal fade modal-bg" id="modal-view">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <!--Modal Header-->
+                <div class="modal-header">
+                    <button class="btn-close"></button>
+                </div>
+
+                <!--Modal Body-->
+                <div class="modal-body d-flex m-5 justify-content-center align-items-center">
+                    <div class="text-center">
+                        <p class="h4 m-2">Suscribirme a:</p>
+                        <img class="img-fluid" src="/img/suscripcion_heladera.png">
+                    </div>
+                    <form id="form-suscripcion" method="POST" action="/mapa-heladeras/suscripcion" class="ms-5">
+                      <input type="hidden" name="heladeraId" id="heladeraId1" value="">
+
+                      <div class="mb-4">
+                          <input id="check1" name="suscribirseA" value="avisoVacio" type="checkbox" class="input"> Avisarme cuando quede cierta cantidad de viandas para que la heladera quede vacía
+                          <input class="d-none" id="quantity" name="cantidadViandas" type="number">
+                      </div>
+                      <div class="mb-4">
+                          <input id="check2" name="suscribirseA" value="avisoLleno" type="checkbox" class="input"> Avisarme cuando la heladera esté casi llena
+                          <p>Será informado para trasladar viandas de esta heladera a una más vacía</p>
+                      </div>
+                      <div class="mb-4">
+                          <input id="check3" name="suscribirseA" value="avisoDesperfecto" type="checkbox" class="input"> Avisarme cuando la heladera sufra un desperfecto
+                      </div>
+
+                      <!-- Modal Footer -->
+                      <div class="modal-footer">
+                         <button type="submit" class="btn btn-primary">Finalizar</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal reportar falla -->
+        <div class="modal fade modal-bg" id="modal-falla">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <!--Modal Header-->
+                    <div class="modal-header">
+                        <button class="btn-close"></button>
+                    </div>
+
+                    <!--Modal Body-->
+                    <div class="modal-body d-flex m-5 justify-content-center align-items-center">
+                        <div class="text-center">
+                            <p class="h4 m-2">Registrar falla: Heladera Retiro</p>
+                            <img class="img-fluid" src="/img/reportar_falla.png">
+                        </div>
+                        <form class="ms-5" id="form-falla" method="POST" action="/mapa-heladeras/reportar-falla">
+                            <input type="hidden" name="heladeraId" id="heladeraId2" value="">
+                            <div class="form-group mb-2">
+                                <label for="descripcion" class="form-label">Descripcion</label>
+                                <textarea name="descripcion" type="text" class="form-control" id="descripcion" required></textarea>
+                            </div>
+                            <div class="form-group mb-2">
+                               <label for="fecha" class="form-label">Fecha</label>
+                               <input type="date" class="form-control" name="fecha" id="fecha" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagenes" class="form-label">Adjuntar imagenes</label>
+                                <input name="imagenes" class="form-control" type="file" id="imagenes" multiple>
+                            </div>
+                            <div class="modal-footer">
+                               <button type="submit" class="btn btn-primary">finalizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+{{/partial}}
+{{> base}}
+
+    <script>
+        window.addEventListener('load', () => {
+            const checkbox = document.getElementById("check1");
+            const quantity_form = document.getElementById("quantity");
+
+            checkbox.addEventListener('change', () => {
+                quantity_form.classList.toggle("d-none");
+            })
+        })
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+        </script>
+        <script>
+                const modalView = document.getElementById('modal-view');
+                const modalFalla = document.getElementById('modal-falla');
+                // Initialize the map
+                var map = L.map('map').setView([-34.61784311248886, -58.43367499250259], 13);
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 500,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                const fridges = {{{json heladeras}}};
+
+                fridges.forEach(fridge => {
+                    const { lat, lon, name, id, cantidadMaxima, cantidadViandas, icono, estado } = fridge;
+
+                    const icon = L.icon({
+                        iconUrl: `/img/${estado}.png`,
+                        iconSize: [120, 120],      // Tamaño del ícono
+                        iconAnchor: [60, 60],      // Centramos el ícono
+                        popupAnchor: [0, -60],     // Ajustamos el popup si es necesario
+                        shadowSize: [68, 95],      // Tamaño de la sombra
+                        shadowAnchor: [34, 47.5]   // Centramos la sombra, si es necesario
+                    });
+
+                    const marker = L.marker([lat, lon], { icon }).addTo(map);
+                    const new_option = document.createElement("option");
+                    new_option.text = name;
+                    new_option.id = id;
+                    new_option.value = [lat, lon];
+
+                    const popupContent = `
+                            <div>
+                                <p class="h3">${name}</p>
+                                <p class="h4">Viandas: ${cantidadViandas}/${cantidadMaxima}</p>
+                                {{#ifCond user.rol 'HUMANA'}}
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <div>
+                                            <p>Suscribirme</p>
+                                            <img class="btn img-fluid w-100" src="/img/suscribirse.png" data-bs-toggle="modal" data-bs-target="#modal-view" data-heladera="${name}" data-id="${id}">
+                                        </div>
+                                        <div>
+                                            <p>Reportar Falla</p>
+                                            <img class="btn img-fluid w-100" src="/img/reportar_falla.png" data-bs-toggle="modal" data-bs-target="#modal-falla" data-heladera="${name}" data-id="${id}">
+                                        </div>
+                                    </div>
+                                {{/ifCond}}
+                            </div>`;
+
+                    marker.bindPopup(popupContent);
+                    document.getElementById("seleccionar_locacion").appendChild(new_option);
+                });
+
+                // Handle location selector changes
+                document.getElementById("seleccionar_locacion").addEventListener("change", function (e) {
+                    if (e.target.value == -1) {
+                        return;
+                    }
+                    map.flyTo(e.target.value.split(','), 15);
+                });
+
+                function guardarUbicacionMapa() {
+                    const mapaEstado = {
+                        latitud: map.getCenter().lat,
+                        longitud: map.getCenter().lng,
+                        zoom: map.getZoom()
+                    };
+                    localStorage.setItem('mapaEstado', JSON.stringify(mapaEstado));
+                }
+
+                function restaurarUbicacionMapa() {
+                    const mapaEstadoGuardado = localStorage.getItem('mapaEstado');
+                    if (mapaEstadoGuardado) {
+                        const mapaEstado = JSON.parse(mapaEstadoGuardado);
+                        map.setView([mapaEstado.latitud, mapaEstado.longitud], mapaEstado.zoom);
+                    }
+                }
+
+                restaurarUbicacionMapa();
+
+                map.on('moveend', guardarUbicacionMapa);
+
+                modalView.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const heladeraName = button.getAttribute('data-heladera');
+                    const heladeraId = button.getAttribute('data-id');
+
+                    const modalTitle = modalView.querySelector('.modal-body .h4');
+                    modalTitle.textContent = `Suscribirme a: ${heladeraName}`;
+
+                    document.getElementById('heladeraId1').value = heladeraId;
+                });
+
+                modalFalla.addEventListener('show.bs.modal', function (event) {
+                     const button = event.relatedTarget;
+                     const heladeraName = button.getAttribute('data-heladera');
+                     const heladeraId = button.getAttribute('data-id');
+
+                     const modalTitle = modalFalla.querySelector('.modal-body .h4');
+                     modalTitle.textContent = `Registrar falla: ${heladeraName}`;
+
+                     document.getElementById('heladeraId2').value = heladeraId;
+                });
+
+            </script>

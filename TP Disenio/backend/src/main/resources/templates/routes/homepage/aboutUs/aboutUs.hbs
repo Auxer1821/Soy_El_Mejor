@@ -1,0 +1,108 @@
+<style>
+    .hero {
+        background-color: var(--second-color);
+        color: var(--third-color);
+    }
+
+    .history-card {
+        border-left: 4px solid var(--main-color);
+        border-radius: 0.25rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .history-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .year-marker {
+        position: sticky;
+        top: 0;
+        background-color: var(--main-color);
+        color: white;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        z-index: 100;
+    }
+
+    header{
+        display: none;
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex hero align-items-center justify-content-center w-100">
+            <img src="/img/logo.png" alt="Solidarity Fridge Logo" class="mb-3 img-fluid"
+                 style="max-width: 300px;">
+            <div class="ms-md-4">
+                <h1 class="mb-3">Solidarity Fridge</h1>
+                <p>Somos una ONG que se encarga de la colocación de heladeras en distintos lugares estratégicos de
+                    nuestro país
+                    para mejorar el acceso a los alimentos para personas con vulnerabilidad alimentaria.</p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div id="history-timeline">
+                    <div class="year-marker">2022</div>
+                    <div class="history-card">
+                        <h3>El nacimiento de una idea</h3>
+                        <p>Solidarity Fridge nace como respuesta a la creciente necesidad de acceso a alimentos en
+                            comunidades vulnerables. Un grupo de voluntarios se une con la visión de crear un cambio
+                            significativo.</p>
+                    </div>
+
+                    <div class="year-marker">2023</div>
+                    <div class="history-card">
+                        <h3>Primera heladera solidaria</h3>
+                        <p>Instalamos nuestra primera heladera en el barrio de Almagro, Buenos Aires. La comunidad
+                            recibe la iniciativa con entusiasmo, y rápidamente vemos el impacto positivo en las familias
+                            locales.</p>
+                    </div>
+
+                    <div class="year-marker">2024</div>
+                    <div class="history-card">
+                        <h3>100 heladeras y contando</h3>
+                        <p>Alcanzamos un hito importante: 100 heladeras solidarias instaladas en todo el país. Nuestro
+                            impacto sigue creciendo, y con el apoyo continuo de voluntarios y donantes, miramos hacia un
+                            futuro aún más brillante.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function isElementInViewport(el) {
+            var rect = el.getBoundingClientRect();
+            return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        function handleScroll() {
+            var cards = document.querySelectorAll('.history-card');
+            cards.forEach(function (card) {
+                if (isElementInViewport(card)) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('load', handleScroll);
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', handleScroll);
+    </script>
+{{/partial}}
+{{>base}}

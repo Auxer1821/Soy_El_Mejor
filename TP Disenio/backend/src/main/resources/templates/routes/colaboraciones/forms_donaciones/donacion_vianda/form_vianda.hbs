@@ -1,0 +1,43 @@
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex container my-5 min-vh-100 mb-5 shadow p-3 bg-white rounded">
+            <div class="d-flex container-fluid justify-content-center align-items-center">
+                <img src="/img/vianda2.png" alt="">
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column w-100">
+                <h2 class="mb-5">Donar Vianda</h2>
+                <div class="w-75">
+                    {{#if error}}
+                        <div class="alert alert-danger" role="alert">
+                            {{this.error}}
+                        </div>
+                    {{/if}}
+                    <form method="POST" action="/colaboraciones/donar-vianda">
+                        <input name="id_heladera" type="text" class="hidden" id="exampleInputPassword1" value="{{heladera.id}}" required>
+                        <div class="form-group mb-3">
+                            <label>¿Qué comida es?</label>
+                            <input name="comida" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                   required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="exampleInputPassword1">Fecha de caducidad</label>
+                            <input name="fecha_caducidad" type="datetime-local" class="form-control" id="exampleInputPassword1" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="exampleInputPassword1">Calorias</label>
+                            <input name="calorias" type="number" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="exampleInputPassword1">Peso (gramos)</label>
+                            <input name="peso" type="number" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="w-100 text-center">
+                            <button type="submit" class="btn btn-primary w-75">Donar vianda</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> base}}

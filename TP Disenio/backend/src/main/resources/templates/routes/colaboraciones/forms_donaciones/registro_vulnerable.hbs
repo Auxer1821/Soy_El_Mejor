@@ -1,0 +1,156 @@
+<style>
+    .separator-children {
+        border-top: 1px solid var(--main-color);
+    }
+
+    .image-button-add {
+        width: 110px;
+        height: 110px;
+        transition: transform 0.2s ease;
+    }
+
+    .image-button-add:hover {
+        transform: scale(0.95);
+    }
+
+    .image-button-add:active {
+        transform: scale(0.85);
+    }
+
+    .btn-add-children:focus {
+        border: none;
+    }
+
+
+    .image-button-accept {
+        width: 58px;
+        height: 58px;
+        transition: transform 0.2s ease;
+    }
+
+    .image-button-accept:hover {
+        transform: scale(0.95);
+    }
+
+    .image-button-accept:active {
+        transform: scale(0.85);
+    }
+</style>
+
+
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="container my-5 min-vh-100 mb-5 shadow p-3 bg-white rounded">
+            <h2>Registar Vulnerable</h2>
+            {{#if error}}
+                <div class="alert alert-danger" role="alert">
+                    {{this.error}}
+                </div>
+            {{/if}}
+            <!-- Modal -->
+            {{#if status}}
+                <div class="alert alert-success" role="alert">
+                    Las personas se han registrado exitosamente.
+                    ¡Gracias por su colaboración!
+                </div>
+            {{/if}}
+            <form id="createUserForm" action="/colaboraciones/registrar-vulnerable" method="POST" class="needs-validation" novalidate>
+                <!-- Opciones Nombre-->
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <label for="firstName" class="form-label">Nombre*</label>
+                        <input type="text" class="form-control" id="firstName" name="nombre" placeholder="ej: Bruno" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Apellido*</label>
+                        <input type="text" class="form-control" id="lastName" name="apellido" placeholder="ej: Juan Sartori"required>
+                    </div>
+
+                </div>
+
+                <!-- Opciones 4: Documento -->
+                <div class="mb-3 d-flex align-items-center">
+                    <!-- Campo de tipo de documento a la izquierda -->
+                    <div class="flex-shrink-1 me-3">
+                        <label for="documentType" class="form-label">Tipo de documento*</label>
+                        <select class="form-select" id="documentType" name="tipo_documento" required>
+                            <option value="">Seleccione...</option>
+                            <option value="dni">DNI</option>
+                            <option value="libreta-civica">Libreta Cívica</option>
+                            <option value="libreta-electronica">Libreta Electrónica</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo de número de documento a la derecha -->
+                    <div class="flex-grow-1">
+                        <label for="documentNumber" class="form-label">Número de documento*</label>
+                        <input type="text" class="form-control" id="documentNumber" name="numero_documento" placeholder="ej: 44552722"required>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 d-flex align-items-center ">
+                    <div class="flex-shrink-1 me-3">
+                        <label for="provincia" class="form-label">Provincia:</label>
+                        <select id="provincia" class="form-select" name="provincia" onchange="actualizarLocalidades()" required>
+                            <option value="{{datos_usuario.provincia}}" >Selecciona una provincia</option>
+                        </select>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <label for="localidad" class="form-label">Localidad:</label>
+                        <input type="hidden" id="nombreLocalidad" name="nombreLocalidad">
+                        <select id="localidad" class="form-select" name="localidad" required>
+                            <option value="{{datos_usuario.localidad}}">Selecciona una localidad</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Opcione 3-->
+                <div class="mb-3">
+                    <label for="address" class="form-label">Dirección*</label>
+                    <input type="text" class="form-control" id="address" name="direccion"
+                           placeholder="ej: Carpintero 6931" value="{{datos_usuario.direccion}}" required>
+                </div>
+
+
+                <!-- Opciones 4-->
+                <div class="mb-3">
+                    <label for="birthdate" class="form-label">Fecha de nacimiento*</label>
+                    <input type="date" class="form-control" id="birthdate" name="dob" required>
+                </div>
+
+
+                <h3 class="my-4">Hijos</h3>
+
+                <!-- children dinamicos -->
+                <div class="dynamic-children"></div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between align-items-center my-4">
+                    <!-- Boton de agregar children -->
+                    <button type="button" class="btn btn-add-children p-0 d-flex align-items-center" id="image-button-add">
+                        <span class="ms-2">Agregar Hijo</span>
+                        <img  src="/img/plus-circle.png" alt="Agregar children" class="image-button-add">
+                    </button>
+                    <!-- Boton de siguiente -->
+                    <button id="finalizar" type="submit" class="btn p-0">
+                        <img src="/img/BotonCheck.png" alt="Siguiente" class="image-button-accept">
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{{/partial}}
+{{>base}}
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="/js/colaboraciones/registro_vulnerable/hijosDinamicos.js"></script>
+<script src="/js/usuarios/direcciones.js"></script>

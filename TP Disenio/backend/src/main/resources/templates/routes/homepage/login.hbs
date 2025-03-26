@@ -1,0 +1,80 @@
+<style>
+    button {
+        background-color: var(--second-color);
+        color: rgb(17, 17, 17);
+        outline: none;
+        border: none;
+    }
+
+    .create_account_span {
+        color: #E08F00;
+        font-weight: 700;
+    }
+
+    .bg-right-side {
+        background: url("https://images.unsplash.com/photo-1533659124865-d6072dc035e1?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* You can adjust these values */
+    }
+
+    header {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="row min-vh-100">
+        <div class="col-12 col-md-6 d-flex justify-content-center min-vh-100">
+            <!-- Ajuste de tamaño del contenedor -->
+            <div class="w-75 w-md-50 d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center mb-4">
+                    <img src="/img/logo.png" class="w-25 me-4 rounded"/>
+                    <h1 class="fw-bold">Solidarity Fridge</h1>
+                </div>
+                {{#if error}}
+                    <div class="alert alert-danger" role="alert">
+                        {{this.error}}
+                    </div>
+                {{/if}}
+                <form id="login" action="/login" method="POST">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Usuario" aria-label="Username" aria-describedby="basic-addon1" name="username" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">
+                            <i class="bi bi-key"></i>
+                        </span>
+                        <input type="password" class="form-control" placeholder="Contraseña" aria-label="Password" name="password" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div class="mt-4 d-flex flex-column align-items-center">
+                        <button type="submit" class="w-100 p-2 rounded shadow-sm fw-bold">Iniciar sesion</button>
+                    </div>
+                </form>
+                <div class="mt-4 d-flex flex-column align-items-center">
+                    <p class="mt-4">¿No tienes una cuenta? <a href="/registrarse"><span class="create_account_span">Crear cuenta</span></a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 bg-right-side min-vh-50 min-vh-md-100 d-flex flex-column justify-content-center align-items-center">
+            <p class="text-light h2 h-md-1 fw-bolder w-75 text-center text-shadow">Somos la mejor compañia de ayuda humanitaria</p>
+        </div>
+    </div>
+{{/partial}}
+
+{{> base}}

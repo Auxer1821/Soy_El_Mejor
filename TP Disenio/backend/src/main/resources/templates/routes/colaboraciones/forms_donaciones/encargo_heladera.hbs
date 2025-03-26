@@ -1,0 +1,225 @@
+<style>
+    #infoList {
+        list-style-type: none; /* Elimina los puntos */
+        padding: 0;           /* Opcional: elimina el espacio interno del ul */
+        margin: 0;            /* Opcional: elimina el espacio externo del ul */
+    }
+</style>
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex container my-5 min-vh-100 mb-5 shadow p-3 bg-white rounded align-items-center text-center">
+            <div>
+                <img src="/img/heladera_minimalista.png" alt="">
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column w-100">
+                <h2 class="mb-5">Hacerse cargo de una heladera</h2>
+                <div class="w-100">
+                    {{#if error}}
+                        <div class="alert alert-danger" role="alert">
+                            {{this.error}}
+                        </div>
+                    {{/if}}
+                    <!-- Modal -->
+                    {{#if status}}
+                        <div class="alert alert-success" role="alert">
+                            La heladera se le ha encargado exitosamente.
+                            ¡Gracias por su colaboración!
+                        </div>
+                    {{/if}}
+                    <form method="POST" action="/colaboraciones/encargarse-de-heladera">
+                        <div class="form-group p-3">
+                            <label for="exampleInputPassword1">Nombre de la heladera</label>
+                            <input name="nombre" type="text" class="form-control" id="nombre" placeholder="ej: Heladera MiEmpresa" required>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <label for="dropdownMenu">Seleccionar un modelo</label>
+                            <select name="modeloId" class="form-control" id="dropdownMenu" required>
+                                <option>-Vacio-</option>
+                                {{#each modelo}}
+                                    <option
+                                            value="{{this.id}}"
+                                            data-temp-max="{{this.temperaturaMaxima}}"
+                                            data-temp-min="{{this.temperaturaMinima}}"
+                                            data-viandas-max="{{this.maxCantidadViandas}}">
+                                        {{this.nombre}}
+                                    </option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <div id="infoContainer" class="card mt-3 border-primary" style="display: none;">
+                            <div class="card-body">
+                                <h5 class="card-title">Información del Modelo Seleccionado:</h5>
+                                <ul id="infoList" class="list-unstyled">
+                                    <li><strong>Temperatura Máxima:</strong> <span id="tempMax"></span></li>
+                                    <li><strong>Temperatura Mínima:</strong> <span id="tempMin"></span></li>
+                                    <li><strong>Cantidad Máxima de Viandas:</strong> <span id="viandasMax"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="p-3" id="map" style="height: 400px;"></div>
+
+                        <div class="form-group p-3">
+                            <label for="dropdownProvincias">Provincia</label>
+                            <input type="text" id="dropdownProvincias" class="form-control" name="prov_nombre" readonly>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <label for="localidadInput">Localidad</label>
+                            <input type="text" id="localidadInput" class="form-control" name="loc_nombre" readonly>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <label for="direccionInput">Direccion</label>
+                            <input type="text" id="direccionInput" class="form-control" name="direccion" required>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <label for="latInput">Latitud</label>
+                            <input type="text" class="form-control" id="latInput" name="lat" placeholder="Latitud" readonly>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <label for="lngInput">Longitud</label>
+                            <input type="text" class="form-control" id="lngInput" name="lng" placeholder="Longitud" readonly>
+                        </div>
+
+                        <div class="mt-5">
+                            <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#modal-view">Recomendar</button>
+                            <button class="btn btn-primary" type="submit">Finalizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{/partial}}
+{{>base}}
+
+<script>
+    document.getElementById('dropdownMenu').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+
+        const tempMax = selectedOption.getAttribute('data-temp-max');
+        const tempMin = selectedOption.getAttribute('data-temp-min');
+        const viandasMax = selectedOption.getAttribute('data-viandas-max');
+
+        const infoContainer = document.getElementById('infoContainer');
+        const tempMaxSpan = document.getElementById('tempMax');
+        const tempMinSpan = document.getElementById('tempMin');
+        const viandasMaxSpan = document.getElementById('viandasMax');
+
+        if (tempMax && tempMin && viandasMax) {
+            tempMaxSpan.textContent = tempMax + ' °C';
+            tempMinSpan.textContent = tempMin + ' °C';
+            viandasMaxSpan.textContent = viandasMax + ' unidades';
+            infoContainer.style.display = 'block';
+        } else {
+            infoContainer.style.display = 'none';
+        }
+    });
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+</script>
+
+<script>
+    // Inicializar el mapa centrado en Argentina con una vista más amplia
+    var map = L.map('map').setView([-38.4161, -63.6167], 5);
+
+    // Cargar el mapa de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Crear una imagen personalizada para el marcador
+    var customIcon = L.icon({
+        iconUrl: '/img/heladera_minimalista.png', // Ruta a tu imagen
+        iconSize: [32, 32],  // Tamaño del icono (puedes ajustarlo)
+        iconAnchor: [16, 32], // Ancla del icono (donde se coloca el marcador)
+        popupAnchor: [0, -32] // Donde aparece el popup con respecto al marcador
+    });
+
+    // Crear un marcador con la imagen personalizada
+    var marker = L.marker([-38.4161, -63.6167], { icon: customIcon, draggable: true }).addTo(map);
+
+    // Función para obtener la provincia y localidad usando geocodificación inversa
+    function getLocationFromCoordinates(lat, lng) {
+        // URL para la API de geocodificación inversa de Nominatim
+        var url = `https://apis.datos.gob.ar/georef/api/ubicacion?lat=${lat}&lon=${lng}&aplanar=true&campos=estandar`;
+
+        fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Imprimir la respuesta completa en consola para revisar la estructura
+                    console.log('Respuesta de la API de Georef:', data);
+
+                    // Asegurarse de que la respuesta contenga los detalles de la ubicación
+                    if (data && data.ubicacion) {
+                        // Obtener la provincia y municipio desde la respuesta
+                        const provincia = data.ubicacion.provincia_nombre; // Provincia
+                        const municipio = data.ubicacion.municipio_nombre; // Municipio
+
+                        // Verificar si la respuesta contiene los datos de la provincia y municipio
+                        if (provincia && municipio) {
+                            console.log(`Provincia: ${provincia}, Municipio: ${municipio}`);
+
+                            // Actualizar los campos de provincia y localidad en el formulario
+                            document.getElementById('dropdownProvincias').value = provincia; // Asignar el nombre de la provincia
+                            document.getElementById('localidadInput').value = municipio; // Asignar el nombre del municipio
+                        } else {
+                            console.log('No se pudo obtener la provincia o municipio');
+                        }
+                    } else {
+                        console.log('No se encontró la ubicación en la respuesta');
+                    }
+                })
+                .catch(error => {
+                    console.log('Error al obtener la ubicación:', error);
+                });
+    }
+
+    // Función para actualizar las coordenadas y mostrar el marcador, y además obtener la provincia y localidad
+    function updateCoordinates(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        // Actualizar las coordenadas en los campos del formulario
+        document.getElementById("latInput").value = lat;
+        document.getElementById("lngInput").value = lng;
+
+        // Crear el contenido del popup con las coordenadas y un diseño más llamativo
+        var popupContent = `
+         <div style="font-family: 'Arial', sans-serif; background-color: #f8f9fa; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <h5 style="color: #063229; margin-bottom: 10px;">Información de la Ubicación</h5>
+            <p><strong>Coordenadas:</strong></p>
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong>Latitud:</strong> <span style="color: #063229; font-weight: bold;">${lat}</span></li>
+                <li><strong>Longitud:</strong> <span style="color: #063229; font-weight: bold;">${lng}</span></li>
+            </ul>
+        </div>
+        `;
+
+
+        // Actualizar la posición del marcador y hacerlo visible
+        marker.setLatLng([lat, lng]).setOpacity(1);  // Establecer opacidad en 1 para hacerlo visible
+        marker.bindPopup(popupContent).openPopup();   // Abrir el popup
+
+        // Llamar a la función de geocodificación para obtener la provincia y localidad
+        getLocationFromCoordinates(lat, lng);
+    }
+
+    // Agregar un evento al hacer clic en el mapa
+    map.on('click', updateCoordinates);
+
+    // Marcar la posición inicial del marcador
+    marker.on('dragend', function(e) {
+        updateCoordinates(e);
+    });
+</script>
+
+

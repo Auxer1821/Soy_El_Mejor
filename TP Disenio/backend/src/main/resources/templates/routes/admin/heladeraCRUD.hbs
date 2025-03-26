@@ -1,0 +1,251 @@
+{{#partial "contenido"}}
+    <div id="map" class="w-100" style="height:50vh"></div>
+
+    <div class="container mt-5">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre de la Heladera</th>
+                <th scope="col">Cantidad de Viandas</th>
+                <th scope="col">Capacidad Máxima</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th> <!-- New column for edit/delete -->
+            </tr>
+            </thead>
+            <tbody>
+            {{#each heladeras}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.cantidadViandas}}</td>
+                    <td>{{this.cantidadMaxima}}</td>
+                    <td>
+                        {{this.estado}}
+                        <td>
+
+                            <button type="button" class="btn btn-link p-0" data-bs-toggle="modal"
+                                        data-bs-target="#editHeladeraModal"
+                                        data-id="{{id}}"
+                                        data-name="{{name}}"
+                                        data-direccion="{{direccion}}"
+                                        data-localidad="{{localidad}}"
+                                        data-provincia="{{provincia}}"
+                                        data-latitud="{{lat}}"
+                                        data-longitud="{{lon}}"
+                                        data-estado="{{estado}}">
+                                 <i class="bi bi-pencil-square"></i>
+                            </button>
+                    </td>
+                    <td>
+
+
+                        <form action="/eliminar-heladera" method="POST" style="display: inline;">
+                            <input type="hidden" name="heladeraId" value="{{this.id}}">
+                            <button type="submit" class="btn btn-link p-0">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i>Añadir Heladera <!-- Icon and text for add -->
+        </button>
+    </div>
+
+    <div class="modal fade" id="editHeladeraModal" tabindex="-1" aria-labelledby="editHeladeraModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editHeladeraModalLabel">Modificar Información de la Heladera</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editHeladeraForm" method="POST" action="/editar-heladera">
+                        <div class="mb-3">
+                            <label for="nombreHeladera" class="form-label">Nombre de la heladera</label>
+                            <input type="text" class="form-control" id="nombreHeladera" name="nombreHeladera" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="localidad" class="form-label">Localidad</label>
+                            <input type="text" class="form-control" id="localidad" name="localidad" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="provincia" class="form-label">Provincia</label>
+                            <input type="text" class="form-control" id="provincia" name="provincia" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="latitud" class="form-label">Latitud</label>
+                            <input type="number" step="any" class="form-control" id="latitud" name="latitud" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="longitud" class="form-label">Longitud</label>
+                            <input type="number" step="any" class="form-control" id="longitud" name="longitud" required>
+                        </div>
+
+                        <div id="mapSelector" style="height: 300px;"></div>
+
+                        <div class="mb-3">
+                            <label for="estadoHeladera" class="form-label">Estado</label>
+                            <select class="form-select" id="estadoHeladera" name="estadoHeladera" required>
+                                <option value="FUNCIONAMIENTO">Funcionamiento</option>
+                                <option value="INACTIVA">Inactiva</option>
+                                <option value="ENMANTENIMIENTO">En Mantenimiento</option>
+                                <option value="ENPELIGRO">En Peligro</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="editHeladeraForm" class="btn btn-primary" id="saveHeladeraChanges">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+        </script>
+        <script>
+            // Initialize the map
+            var map = L.map('map').setView([-34.61784311248886, -58.43367499250259], 13);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 500,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            const fridges = {{{json heladeras}}};
+
+            fridges.forEach(fridge => {
+                const {lat, lon, name, id, cantidadMaxima, cantidadViandas, icono, estado} = fridge;
+
+                const icon = L.icon({
+                    iconUrl: `/img/${estado}.png`,
+                    iconSize: [80, 80],
+                    iconAnchor: [22, 94],
+                    popupAnchor: [-3, -76],
+                    shadowSize: [68, 95],
+                    shadowAnchor: [22, 94]
+                });
+
+                const marker = L.marker([lat, lon], {icon}).addTo(map);
+                const new_option = document.createElement("option");
+                new_option.text = name;
+                new_option.id = id;
+                new_option.value = [lat, lon];
+
+                const popupContent = `
+                        <div>
+                                <p class="h3">${name}</p>
+                                <p class="h4">Viandas: ${cantidadViandas}/${cantidadMaxima}</p>
+                            </div>`;
+
+                marker.bindPopup(popupContent);
+            });
+
+            function guardarUbicacionMapa() {
+                const mapaEstado = {
+                    latitud: map.getCenter().lat,
+                    longitud: map.getCenter().lng,
+                    zoom: map.getZoom()
+                };
+                localStorage.setItem('mapaEstado', JSON.stringify(mapaEstado));
+            }
+
+            function restaurarUbicacionMapa() {
+                const mapaEstadoGuardado = localStorage.getItem('mapaEstado');
+                if (mapaEstadoGuardado) {
+                    const mapaEstado = JSON.parse(mapaEstadoGuardado);
+                    map.setView([mapaEstado.latitud, mapaEstado.longitud], mapaEstado.zoom);
+                }
+            }
+
+            restaurarUbicacionMapa();
+
+            map.on('moveend', guardarUbicacionMapa);
+
+            editHeladeraModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // El botón que disparó el modal
+                const heladeraIdInput = document.querySelector('#editHeladeraForm input[name="heladeraId"]');
+
+                // Eliminar campo previo si existe
+                if (heladeraIdInput) {
+                    heladeraIdInput.remove();
+                }
+
+                const heladeraId = button.getAttribute('data-id');
+                const heladeraName = button.getAttribute('data-name');
+                const heladeraDireccion = button.getAttribute('data-direccion');
+                const heladeraEstado = button.getAttribute('data-estado');
+                const heladeraLatitud = button.getAttribute('data-latitud');
+                const heladeraLongitud = button.getAttribute('data-longitud');
+                const heladeraLocalidad = button.getAttribute('data-localidad');
+                const heladeraProvincia = button.getAttribute('data-provincia');
+
+                const modalTitle = editHeladeraModal.querySelector('.modal-title');
+                const nombreHeladeraInput = editHeladeraModal.querySelector('#nombreHeladera');
+                const direccionHeladeraInput = editHeladeraModal.querySelector('#direccion');
+                const localidadHeladeraInput = editHeladeraModal.querySelector('#localidad');
+                const provinciaHeladeraInput = editHeladeraModal.querySelector('#provincia');
+                const latitudHeladeraInput = editHeladeraModal.querySelector('#latitud');
+                const longitudHeladeraInput = editHeladeraModal.querySelector('#longitud');
+                const estadoHeladeraSelect = editHeladeraModal.querySelector('#estadoHeladera');
+
+                modalTitle.textContent = `Modificar Información de la Heladera: ${heladeraName}`;
+                nombreHeladeraInput.value = heladeraName;
+                direccionHeladeraInput.value = heladeraDireccion;
+                localidadHeladeraInput.value = heladeraLocalidad;
+                provinciaHeladeraInput.value = heladeraProvincia;
+                latitudHeladeraInput.value = heladeraLatitud;
+                longitudHeladeraInput.value = heladeraLongitud;
+                estadoHeladeraSelect.value = heladeraEstado;
+
+                // Crear nuevo input oculto para ID
+                const newHeladeraIdInput = document.createElement('input');
+                newHeladeraIdInput.type = 'hidden';
+                newHeladeraIdInput.name = 'heladeraId';
+                newHeladeraIdInput.value = heladeraId;
+                document.getElementById('editHeladeraForm').appendChild(newHeladeraIdInput);
+
+                let markerSelector;
+
+                const mapSelector = L.map('mapSelector').setView([-34.61784311248886, -58.43367499250259], 13);
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                     maxZoom: 19,
+                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(mapSelector);
+
+                mapSelector.on('click', function (e) {
+                      const { lat, lng } = e.latlng;
+
+                      if (markerSelector) {
+                             markerSelector.setLatLng(e.latlng);
+                      } else {
+                             markerSelector = L.marker(e.latlng).addTo(mapSelector);
+                      }
+
+                      document.getElementById('latitud').value = lat;
+                      document.getElementById('longitud').value = lng;
+                 });
+            });
+
+        </script>
+
+{{/partial}}
+{{> base}}

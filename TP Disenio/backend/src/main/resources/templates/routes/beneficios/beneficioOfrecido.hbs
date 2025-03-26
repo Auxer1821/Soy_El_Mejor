@@ -1,0 +1,51 @@
+{{#partial "contenido"}}
+    <div class="h-75 w-100 d-flex flex-column align-items-center">
+        {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{this}}
+            </div>
+        {{/if}}
+
+        <div class="d-flex align-items-center justify-content-center w-50 shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="d-flex align-items-center justify-content-center w-50">
+                <img class="points-icon img-fluid w-25 h-25 p-3" src="/img/puntos.png" alt="Icono de puntos">
+
+                <p class="fs-4 my-auto fw-bold"> Mis puntos: {{user.puntosAdquiridos}}</p>
+            </div>
+        </div>
+
+        {{#each beneficios}}
+        <div class="d-flex align-items-center justify-content-around w-75 shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="w-25">
+                <img class="img-fluid" src="{{this.imagenPath}}" alt="Imagen del producto">
+            </div>
+            <div class="w-50">
+                <p class="h3">{{this.nombreProducto}}</p>
+
+                <p>{{this.descripcion}}</p>
+                <div class="d-flex align-items-end justify-content-end flex-column">
+                    <div class="d-flex align-items-center justify-content-end w-50">
+                        <img class="points-icon img-fluid w-25 h-25 p-3" src="/img/puntos.png" alt="Icono de puntos">
+
+                        <p class="h6 my-auto">{{this.puntosNecesarios}}</p>
+                    </div>
+                    {{#if this.puedeCanjear}}
+                    <form action="/beneficios" method="POST">
+                           <input type="hidden" name="id_usuario" value="{{user.id}}">
+                           <input type="hidden" name="beneficioId" value="{{this.id}}">
+                           <button type="submit" class="btn btn-outline-info">Canjear</button>
+                        </form>
+                    {{else}}
+                        <p class="text-danger">No tienes puntos suficientes</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+{{/partial}}
+<script>
+</script>
+
+
+{{> base }}

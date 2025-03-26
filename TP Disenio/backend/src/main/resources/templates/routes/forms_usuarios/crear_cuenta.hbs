@@ -1,0 +1,111 @@
+<style>
+    .title {
+        width: 645px;
+        text-align: center;
+        color: #063229;
+        font-size: 36px;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        word-wrap: break-word;
+    }
+
+    .button-container {
+        background: white;
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .option {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .image-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .image {
+        width: 206px;
+        height: 206px;
+        transition: transform 0.2s ease;  /* Suaviza la transformación */
+    }
+
+    /* Efecto al pasar el mouse por encima */
+    .image-button:hover .image {
+        transform: scale(0.95); /* Reduce la imagen al 95% de su tamaño original */
+    }
+
+    /* Efecto de clic continuo (presionado) */
+    .image-button:active .image {
+        transform: scale(0.85); /* Reduce más la imagen cuando se hace clic */
+    }
+
+    .label {
+        width: 191px;
+        text-align: center;
+        color: var(--third-color);
+        font-size: 20px;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        word-wrap: break-word;
+    }
+
+    /* Ajustes específicos para el título en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .title {
+            width: 351px;
+            font-size: 36px; /* Ajusta el tamaño de la fuente en pantallas grandes */
+            color: var(--third-color);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .d-flex.flex-md-row {
+            flex-direction: column; /* Cambia la dirección del flex a columna en pantallas pequeñas */
+        }
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex align-items-center text-center justify-content-center w-50">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <h1 class="title">
+                    Crear cuenta como persona
+                </h1>
+
+                <div class="button-container d-flex flex-md-row">
+                    <div class="option">
+                        <!-- Botón con Imagen de Persona Humana -->
+                        <a href="/registrarse/humana" class="image-button">
+                            <img src="/img/Boton_humana.png" alt="Persona Humana" class="image">
+                        </a>
+
+                        <div class="label">
+                            Humana
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <!-- Botón con Imagen de Persona Jurídica -->
+                        <a href="/registrarse/juridica" class="image-button">
+                            <img src="/img/Boton_juridica.png" alt="Persona Humana" class="image">
+                        </a>
+                        <div class="label">
+                            Jurídica
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{> base}}

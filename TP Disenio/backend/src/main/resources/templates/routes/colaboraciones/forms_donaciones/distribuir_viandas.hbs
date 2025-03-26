@@ -1,0 +1,97 @@
+<style>
+    .btn-search {
+        background-color: var(--main-color);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 20%;
+        height: 20%;
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-search:hover {
+        background-color: var(--main-color);
+        transform: scale(1.1);
+    }
+</style>
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex container my-5 min-vh-100 mb-5 shadow p-3 bg-white rounded">
+            <div class="d-flex container-fluid justify-content-center align-items-center">
+                <img src="/img/distribuir2.png" alt="">
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column w-100">
+                <h2 class="mb-5">Distribuir Vianda</h2>
+                <div class="w-75">
+                    {{#if error}}
+                        <div class="alert alert-danger" role="alert">
+                            {{this.error}}
+                        </div>
+                    {{/if}}
+                    <form id="distribution-vianda" method="POST" action="/colaboraciones/distribuir-viandas">
+                        <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-center gap-2">
+                            <div>
+                                <label for="latitude" class="form-label">Codigo de la Distribucion</label>
+                                <input name="cod_distribucion" type="number" class="form-control" id="codeInput" step="any"
+                                       placeholder="ej: 11111" value="{{distribucion.id}}" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-search" aria-label="Buscar Comunidades">
+                                <img src="/img/lupa_busqueda.png" alt="Buscar" style="width:100%; height: 100%;">
+                            </button>
+                        </div>
+                    </form>
+
+                    {{#if distribucion}}
+                        <div class="data-section" id="dataSection">
+                            <h2>Datos:</h2>
+                            <ul>
+                                <li><strong>Heladera Origen:</strong> <span id="heladeraOrigen">{{distribucion.heladeraOrigen.nombre}}</span></li>
+                                <li><strong>Heladera Destino:</strong> <span id="heladeraDestino">{{distribucion.heladeraDestino.nombre}}</span></li>
+                                <li><strong>Cantidad Vianda:</strong> <span id="cantidadVianda">{{distribucion.cantidadViandas}}</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-5 text-end">
+                            <button id="acceptButton" class="btn btn-primary">Aceptar</button>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirmar Acción</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="aceptar-distribucion" method="POST" action="/colaboraciones/distribuir-viandas/{{distribucion.id}}">
+                        <input type="hidden" name="cod_distribucion" id="codeInput" value="{{distribucion.id}}">
+                        <div class="modal-body">
+                            ¿Estás seguro de que deseas aceptar esta distribución?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="confirmAcceptButton">Aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('acceptButton').addEventListener('click', function() {
+            var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+            confirmationModal.show();
+        });
+
+        document.getElementById('confirmAcceptButton').addEventListener('click', function() {
+            var confirmationModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+            confirmationModal.hide();
+        });
+    </script>
+{{/partial}}
+{{>base}}

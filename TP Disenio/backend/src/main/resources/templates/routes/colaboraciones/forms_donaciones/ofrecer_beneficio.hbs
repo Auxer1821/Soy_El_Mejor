@@ -1,0 +1,113 @@
+<style>
+    .form-label {
+        color: var(--third-color);
+    }
+
+    .form-control, .form-select {
+        background-color: var(--third-color);
+        border-color: var(--second-color);
+        color: var(--third-color);
+    }
+    .form-control:focus, .form-select:focus {
+        background-color: white;
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 0.25rem rgba(255, 177, 39, 0.25);
+        color: var(--third-color);
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        background-color: rgba(255, 255, 255, 0.1);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 0.5rem;
+        border-radius: 0.375rem;
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex container my-5 min-vh-100 mb-5 shadow p-3 bg-white rounded">
+            <div class="d-flex container-fluid justify-content-center align-items-center w-50">
+                <img class="img-fluid" src="/img/distribuir2.png" alt="">
+            </div>
+            <div class="d-flex justify-content-center align-items-center flex-column w-50">
+                <div class="w-100">
+                    {{#if error}}
+                        <div class="alert alert-danger" role="alert">
+                            {{this.error}}
+                        </div>
+                    {{/if}}
+                    <!-- Modal -->
+                    {{#if status}}
+                        <div class="alert alert-success" role="alert">
+                            El beneficio se ha ofrecido exitosamente.
+                            ¡Gracias por su colaboración!
+                        </div>
+                    {{/if}}
+                    <form method="POST" action="/colaboraciones/ofrecer-beneficio" enctype="multipart/form-data">
+                        <h2 class="text-center mb-4" style="color: var(--third-color);">Ofrecer Beneficio</h2>
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rubro" class="form-label">Rubro:</label>
+                            <select class="form-select" id="rubro" name="rubro" required>
+                                <option value="">Selecciona un rubro</option>
+                                <option value="TECNOLOGIA">Tecnología</option>
+                                <option value="ALIMENTOS">Alimentos</option>
+                                <option value="EDUCACION">Educación</option>
+                                <option value="DEPORTES">Deportes</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="puntos" class="form-label">Cantidad de puntos:</label>
+                            <input type="number" class="form-control" id="puntos" name="puntos" required min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción detallada:</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Foto:</label>
+                            <input type="file" class="form-control" id="foto" name="file" accept="image/*" required>
+                            <div id="fotoPreview" class="image-preview"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleFilePreview(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.style.backgroundImage = `url('${e.target.result}')`;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        handleFilePreview('foto', 'fotoPreview');
+    </script>
+{{/partial}}
+{{>base}}

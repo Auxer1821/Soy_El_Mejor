@@ -1,0 +1,159 @@
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center">
+        <label for="seleccionar_locacion" class="me-3">Heladeras:</label>
+        <select class="form-select mx-auto" name="seleccionar_locacion" id="seleccionar_locacion" style="min-width: 300px; margin-left: 100px; margin-right: 100px;">
+            <option value="-1">Selecciona una heladera</option>
+        </select>
+    </div>
+
+
+    <div id="map" class="w-100 vh-100"></div>
+
+    <div class="modal fade" id="modal-donar" tabindex="-1" aria-labelledby="donarModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-center align-items-center w-100">
+                                <div class="container my-5 shadow p-3 bg-white rounded">
+                                    <div class="row">
+                                        <!-- Imagen -->
+                                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                            <img src="/img/vianda2.png" alt="Imagen vianda" class="img-fluid">
+                                        </div>
+
+                                        <!-- Formulario -->
+                                        <div class="col-md-6 d-flex justify-content-center align-items-center flex-column">
+                                            <h2 class="fs-3 mb-4 text-center h2"></h2>
+
+                                            <form method="POST" id="donarForm" action="/colaboraciones/donar-a-una-heladera">
+                                               <input type="hidden" name="heladeraId" id="heladeraId" value="">
+                                               <div class="form-group mb-3">
+                                                  <label>¿Qué comida es?</label>
+                                                   <input name="comida" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                                          required>
+                                               </div>
+                                               <div class="form-group mb-2">
+                                                   <label for="exampleInputPassword1">Fecha de caducidad</label>
+                                                   <input name="fecha_caducidad" type="date" class="form-control" id="exampleInputPassword1" required>
+                                               </div>
+                                               <div class="form-group mb-2">
+                                                   <label for="exampleInputPassword1">Calorias</label>
+                                                   <input name="calorias" type="number" class="form-control" id="exampleInputPassword1">
+                                               </div>
+                                               <div class="form-group mb-2">
+                                                   <label for="exampleInputPassword1">Peso (gramos)</label>
+                                                   <input name="peso" type="number" class="form-control" id="exampleInputPassword1">
+                                               </div>
+                                           </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('donarForm').submit();">Confirmar Donación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<script>
+    const modalView = document.getElementById("modal-donar");
+    const closeModalBtn = document.getElementById("close");
+
+    closeModalBtn.onclick = function() {
+        modalView.style.display = "none";
+    }
+</script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+    </script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([-34.61784311248886, -58.43367499250259], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 500,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        const fridges = {{{json heladeras}}};
+
+        fridges.forEach(fridge => {
+            const { lat, lon, name, id, cantidadMaxima, cantidadViandas, icono, estado } = fridge;
+
+            const icon = L.icon({
+                iconUrl: `/img/${estado}.png`,
+                iconSize: [120, 120],      // Tamaño del ícono
+                iconAnchor: [60, 60],      // Centramos el ícono
+                popupAnchor: [0, -60],     // Ajustamos el popup si es necesario
+                shadowSize: [68, 95],      // Tamaño de la sombra
+                shadowAnchor: [34, 47.5]   // Centramos la sombra, si es necesario
+            });
+
+            const marker = L.marker([lat, lon], { icon }).addTo(map);
+            const new_option = document.createElement("option");
+            new_option.text = name;
+            new_option.id = id;
+            new_option.value = [lat, lon];
+
+            const popupContent = `
+                <div>
+                    <p class="h3">${name}</p>
+                    <p class="h4">Viandas: ${cantidadViandas}/${cantidadMaxima}</p>
+                    <div class="d-flex justify-content-around align-items-center">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p>Donar vianda</p>
+                            <img class="btn img-fluid w-50" src="/img/suscribirse.png" data-bs-toggle="modal" data-bs-target="#modal-donar" data-heladera="${name}" data-id="${id}" alt="">
+                        </div>
+                    </div>
+                </div>`;
+
+
+            marker.bindPopup(popupContent);
+            document.getElementById("seleccionar_locacion").appendChild(new_option);
+        });
+
+        // Handle location selector changes
+        document.getElementById("seleccionar_locacion").addEventListener("change", function (e) {
+            if (e.target.value == -1) {
+                return;
+            }
+            map.flyTo(e.target.value.split(','), 15);
+        });
+
+        function guardarUbicacionMapa() {
+            const mapaEstado = {
+                latitud: map.getCenter().lat,
+                longitud: map.getCenter().lng,
+                zoom: map.getZoom()
+            };
+            localStorage.setItem('mapaEstado', JSON.stringify(mapaEstado));
+        }
+
+        function restaurarUbicacionMapa() {
+            const mapaEstadoGuardado = localStorage.getItem('mapaEstado');
+            if (mapaEstadoGuardado) {
+                const mapaEstado = JSON.parse(mapaEstadoGuardado);
+                map.setView([mapaEstado.latitud, mapaEstado.longitud], mapaEstado.zoom);
+            }
+        }
+
+        restaurarUbicacionMapa();
+
+        map.on('moveend', guardarUbicacionMapa);
+
+        modalView.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const heladeraName = button.getAttribute('data-heladera');
+            const heladeraId = button.getAttribute('data-id');
+
+            const modalTitle = modalView.querySelector('.modal-body .h2');
+            modalTitle.textContent = `Donar vianda a: ${heladeraName}`;
+
+            document.getElementById('heladeraId').value = heladeraId;
+        });
+    </script>
+
+{{/partial}}
+{{> base}}

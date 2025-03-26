@@ -1,0 +1,223 @@
+<style>
+.table-container {
+      min-height: 100vh;
+    }
+
+    thead th {
+      padding: 1rem;
+      background-color: var(--second-color);
+    }
+</style>
+{{#partial "contenido"}}
+
+
+    <div class="modal fade" id="editTecnicoModal" tabindex="-1" aria-labelledby="editTecnicoModal"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTecnicoModalLabel">Modificar Información del Tecnico</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editTecnicoForm" method="POST" action="/tecnico-editado">
+                            <div class="mb-3">
+                                <label for="cuil" class="form-label">Cuil</label>
+                                <input type="text" class="form-control" id="cuilTecnico" name="cuil" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nombreTecnico" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombreTecnico" name="nombre" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="apellidoTecnico" name="apellido" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="saveTecnicoChanges">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   <div>
+     <table class="table table-bordered text-center">
+           <caption class="font-weight-bold">Técnicos Registrados</caption>
+           <thead>
+             <tr>
+               <th scope="col">Cuil</th>
+               <th scope="col">Nombre</th>
+               <th scope="col">Apellido</th>
+               <th scope="col">Modificar</th>
+               <th scope="col">Estado</th>
+             </tr>
+           </thead>
+     <tbody>
+     {{#each tecnicos}}
+       <tr class="{{#unless this.habilitado}}bg-body-secondary{{/unless}}">
+                       <th scope="row">{{this.cuil}}</th>
+                       <td>{{this.nombre}}</td>
+                       <td>{{this.apellido}}</td>
+                       <td>
+                           <button class="btn btn-secondary" data-cuil="{{this.cuil}}" data-nombre="{{this.nombre}}" data-apellido="{{this.apellido}}" onclick="openEditModal(this)" data-bs-toggle="modal" data-bs-target="#editTecnicoModal">Modificar</button>
+                       </td>
+
+                       {{#if this.habilitado}}
+                       <td><button class="btn btn-danger" data-cuil-des="{{this.cuil}}" onclick="deshabilitarTecnico(this)">Deshabilitar</button></td>
+                       {{else}}
+                       <td><button class="btn btn-success" data-cuil-hab="{{this.cuil}}" onclick="habilitarTecnico(this)">Habilitar</button></td>
+                       {{/if}}
+                   </tr>
+       {{/each}}
+     </tbody>
+   </table>
+       <div class="d-flex justify-content-center align-items-center container mt-4">
+           <!-- Botón para abrir el modal de agregar técnico -->
+           <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addTecnicoModal">
+               Agregar Técnico
+           </button>
+
+           <!-- Modal para agregar técnico -->
+           <div class="modal fade" id="addTecnicoModal" tabindex="-1" aria-labelledby="addTecnicoModalLabel" aria-hidden="true">
+               <div class="modal-dialog">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="addTecnicoModalLabel">Agregar Técnico</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                       </div>
+                       <div class="modal-body">
+                           <form id="addTecnicoForm" method="POST" action="/tecnico-agregado">
+                               <div class="mb-3">
+                                   <label for="cuilAdd" class="form-label">Cuil</label>
+                                   <input type="text" class="form-control" id="cuilAdd" name="cuil" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="nombreAdd" class="form-label">Nombre</label>
+                                   <input type="text" class="form-control" id="nombreAdd" name="nombre" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="apellidoAdd" class="form-label">Apellido</label>
+                                   <input type="text" class="form-control" id="apellidoAdd" name="apellido" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="telefonoAdd" class="form-label">Número de Teléfono</label>
+                                   <input type="tel" class="form-control" id="telefonoAdd" name="telefono" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="radioCoberturaAdd" class="form-label">Radio de Cobertura (km)</label>
+                                   <input type="number" class="form-control" id="radioCoberturaAdd" name="radioCobertura" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="calleAdd" class="form-label">Calle</label>
+                                   <input type="text" class="form-control" id="calleAdd" name="calle" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="latitudAdd" class="form-label">Latitud</label>
+                                   <input type="text" class="form-control" id="latitudAdd" name="latitud" required>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="longitudAdd" class="form-label">Longitud</label>
+                                   <input type="text" class="form-control" id="longitudAdd" name="longitud" required>
+                               </div>
+                           </form>
+                       </div>
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                           <button type="submit" class="btn btn-primary" id="saveAddTecnico">Agregar Técnico</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+<script>
+function openEditModal(button) {
+    const cuil = button.getAttribute("data-cuil");
+    const nombre = button.getAttribute("data-nombre");
+    const apellido = button.getAttribute("data-apellido");
+
+    document.getElementById("cuilTecnico").value = cuil;
+    document.getElementById("nombreTecnico").value = nombre;
+    document.getElementById("apellidoTecnico").value = apellido;
+}
+
+function deshabilitarTecnico(button) {
+    const cuil = button.getAttribute("data-cuil-des");
+
+    const formData = new URLSearchParams();
+    formData.append("cuil", cuil);
+
+    fetch("/tecnico-deshabilitado", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString()
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Técnico deshabilitado correctamente");
+            location.reload();
+        } else {
+            alert("Error al deshabilitar el técnico");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+function habilitarTecnico(button) {
+    const cuil = button.getAttribute("data-cuil-hab");
+
+    const formData = new URLSearchParams();
+    formData.append("cuil", cuil);
+
+    fetch("/tecnico-habilitado", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString()
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Técnico habilitado correctamente");
+            location.reload();
+        } else {
+            alert("Error al habilitar el técnico");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+document.getElementById("saveTecnicoChanges").addEventListener("click", function() {
+    const form = document.getElementById("editTecnicoForm");
+    const formData = new URLSearchParams(new FormData(form));
+
+    fetch("/tecnico-editado", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString()
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Técnico editado correctamente");
+            location.reload();
+        } else {
+            alert("Error al editar el técnico");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+
+</script>
+
+{{/partial}}
+{{> base}}

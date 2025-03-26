@@ -1,0 +1,368 @@
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+
+    .form-label {
+        margin-bottom: 10px;
+    }
+
+    .form-control, .form-select {
+        margin-bottom: 10px;
+    }
+
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    /* Añadir estilo a los campos dinámicos */
+    .dynamic-contact {
+        margin-top: 10px;
+    }
+
+
+    .image-button-add {
+        width: 110px;
+        height: 110px;
+        transition: transform 0.2s ease;
+    }
+
+    .image-button-add:hover {
+        transform: scale(0.95);
+    }
+
+    .image-button-add:active {
+        transform: scale(0.85);
+    }
+
+
+    /* Estilo general para el botón con imagen y texto */
+    .btn-add-contact {
+        display: flex;
+        align-items: center; /* Alinea verticalmente el contenido */
+    }
+
+    /* Espacio entre la imagen y el texto */
+    .btn-add-contact span {
+        margin-right: 15px; /* Ajusta el margen a tu gusto */
+    }
+
+
+    .image-button-accept {
+        width: 58px;
+        height: 58px;
+        transition: transform 0.2s ease;
+    }
+
+    .image-button-accept:hover {
+        transform: scale(0.95);
+    }
+
+    .image-button-accept:active {
+        transform: scale(0.85);
+    }
+
+    .image-button-regresar {
+        width: 58px;
+        height: 58px;
+        transform: scaleX(-1);
+        transition: transform 0.2s ease;
+    }
+
+    .image-button-regresar:hover {
+        transform: scaleX(-1) scale(0.95);
+    }
+
+    .image-button-regresar:active {
+        transform: scaleX(-1) scale(0.85);
+    }
+
+    /* Estilos básicos para ocultar las secciones */
+    .section {
+        opacity: 0;
+        transform: translateX(100%);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        position: absolute;
+        width: 100%;
+    }
+
+    /* Animación para mostrar la sección desde la derecha */
+    .section.active-left {
+        opacity: 1;
+        transform: translateX(0);
+        position: relative;
+    }
+
+    /* Animación para mostrar la sección desde la izquierda */
+    .section.active-right {
+        opacity: 1;
+        transform: translateX(0);
+        position: relative;
+    }
+
+    /* Para la sección que sale hacia la izquierda */
+    .section-exit-left {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    /* Para la sección que sale hacia la derecha */
+    .section-exit-right {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+</style>
+
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="container my-5 min-vh-100 mb-5">
+            {{#each error}}
+                <div class="alert alert-danger" role="alert">
+                    {{this}}
+                </div>
+            {{/each}}
+            <form id="createUserForm" action="/registrarse/humana" method="POST" class="needs-validation" novalidate>
+                <section id="section_inicial" class="section active-left shadow p-3 mb-5 bg-white rounded">
+                    <h2>Crear cuenta</h2>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">Nombre*</label>
+                            <input type="text" class="form-control" id="firstName" name="fname" placeholder="ej: Bruno"
+                                   value="{{datos_usuario.nombre}}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Apellido*</label>
+                            <input type="text" class="form-control" id="lastName" name="lname"
+                                   placeholder="ej: Juan Sartori" value="{{datos_usuario.apellido}}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <div class="flex-shrink-1 me-3">
+                            <label for="documentType" class="form-label">Tipo de documento*</label>
+                            <select class="form-select" id="documentType" name="tipo_documento" required>
+                                <option value="">Seleccione...</option>
+                                <option value="dni" {{#if datos_usuario.tipoDocumento '==' 'dni'}}selected{{/if}}>DNI</option>
+                                <option value="libreta-civica" {{#if datos_usuario.tipoDocumento '==' 'libreta-civica'}}selected{{/if}} >Libreta Cívica</option>
+                                <option value="libreta-electronica" {{#if datos_usuario.tipoDocumento '==' 'libreta-electronica'}}selected{{/if}}>Libreta Electrónica</option>
+                            </select>
+                        </div>
+
+                        <!-- Campo de número de documento a la derecha -->
+                        <div class="flex-grow-1">
+                            <label for="documentNumber" class="form-label">Número de documento*</label>
+                            <input type="text" class="form-control" id="documentNumber" name="nro_documento"
+                                   placeholder="ej: 44552722" value="{{datos_usuario.nroDocumento}}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center ">
+                        <div class="flex-shrink-1 me-3">
+                            <label for="provincia" class="form-label">Provincia:</label>
+                            <select id="provincia" class="form-select" name="provincia" onchange="actualizarLocalidades()" required>
+                                <option value="{{datos_usuario.provincia}}" >Selecciona una provincia</option>
+                            </select>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <label for="localidad" class="form-label">Localidad:</label>
+                            <input type="hidden" id="nombreLocalidad" name="nombreLocalidad">
+                            <select id="localidad" class="form-select" name="localidad" required>
+                                <option value="{{datos_usuario.localidad}}">Selecciona una localidad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Opcione 3-->
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección*</label>
+                        <input type="text" class="form-control" id="address" name="direccion"
+                               placeholder="ej: Carpintero 6931" value="{{datos_usuario.direccion}}" required>
+                    </div>
+
+
+                    <!-- Opciones 4-->
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">Fecha de nacimiento*</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" value="{{datos_usuario.dob}}" required>
+                    </div>
+
+
+                    <h3 class="my-4">Medios de contacto</h3>
+
+                    <!-- Primer Contacto -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="contactMethod1" class="form-label">Medio de contacto*</label>
+                            <select class="form-select" id="contactMethod1" name="medio_contacto" data-index="1" required>
+                                <option value="">Seleccione...</option>
+                                <option value="email" >Email</option>
+                                <option value="whatsapp" >WhatsApp</option>
+                                <option value="telegram" >Telegram</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact1" class="form-label">Contacto*</label>
+                            <input type="text" class="form-control" id="contact1" name="contacto" data-index="1" value="{{datos_usuario.datosContacto.[0]}}" required>
+                        </div>
+                    </div>
+
+                    <!-- Contacto dinamicos -->
+                    <div class="dynamic-contacts"></div>
+
+                    <!-- Form Dinamic -->
+                    {{#each formulario.campos}}
+
+                        <div class="mb-3">
+
+                            {{#ifCond this.formato 'LIBRE'}}
+                                <label for="{{this.id}}" class="form-label">{{this.nombreCampo}}</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="{{this.id}}" 
+                                    name="{{this.id}}" 
+                                    {{#if this.esObligatorio}}required{{/if}}>
+
+
+                            {{else ifCond this.formato 'UNICAOPCION'}}
+                                <label class="form-label">{{this.nombreCampo}}</label>
+                                {{#each this.opciones}}
+                                    <div class="form-check">
+                                        <input 
+                                            type="radio" 
+                                            class="form-check-input" 
+                                            name="{{../id}}" 
+                                            id="{{../id}}-{{@index}}" 
+                                            value="{{this}}" 
+                                            {{#if ../esObligatorio}}required{{/if}}>
+                                        <label class="form-check-label" for="{{../id}}-{{@index}}">{{this}}</label>
+                                    </div>
+                                {{/each}}
+
+
+                            {{else ifCond this.formato 'MULTIPLESOPCIONES'}}
+                                <label class="form-label">{{this.nombreCampo}}</label>
+                                {{#each this.opciones}}
+                                    <div class="form-check">
+                                        <input 
+                                            type="checkbox" 
+                                            class="form-check-input" 
+                                            name="{{../id}}" 
+                                            id="{{../id}}-{{@index}}" 
+                                            value="{{this}}">
+                                        <label class="form-check-label" for="{{../id}}-{{@index}}">{{this}}</label>
+                                    </div>
+                                {{/each}}
+                                
+                            {{/ifCond}}
+                        </div>
+                    {{/each}}
+
+
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between my-4 align-items-center">
+                        <!-- Boton de agregar contacto -->
+                        <button type="button" class="btn btn-add-contact p-0 d-flex align-items-center">
+                            <span class="ms-2">Agregar contacto</span>
+                            <img id="image-button-add" src="/img/plus-circle.png" alt="Agregar contacto"
+                                 class="image-button-add">
+                        </button>
+                        <!-- Boton de siguiente -->
+                        <img id="boton_mostrar_usuario" src="/img/arrow-right-circle.png" alt="Siguiente"
+                             class="image-button-accept">
+                    </div>
+                </section>
+
+                <section id="section_usuario" class="d-none section shadow p-3 mb-5 bg-white rounded">
+                    <h2>Crear usuario</h2>
+
+                    <!-- Nombre de usuario -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de usuario*</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="ej: usuario123"
+                               value="{{datos_usuario.username}}" required minlength="4">
+                        <div class="invalid-feedback">
+                            El nombre debe tener al menos 4 caracteres.
+                        </div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña*</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="********"
+                               required minlength="8" maxlength="64">
+                    </div>
+
+                    <!-- Confirmar contraseña -->
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar contraseña*</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                               placeholder="********" required minlength="8" maxlength="64">
+                        <div class="invalid-feedback">
+                            Las contraseñas no coinciden.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email*</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="mail@example.com"
+                               value="{{datos_usuario.email}}" required>
+                        <div class="invalid-feedback">
+                            Por favor, introduce un email válido.
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between my-4">
+                        <img id="boton_regresar" src="/img/arrow-right-circle.png" alt="Regresar"
+                             class="image-button-regresar">
+
+                        <button type="submit" class="btn p-0">
+                            <img src="/img/BotonCheck.png" alt="Siguiente" class="image-button-accept">
+                        </button>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+{{>base}}
+
+<script src="/js/usuarios/contactosDinamicos.js"></script>
+<script src="/js/usuarios/transicion.js"></script>
+<script src="/js/usuarios/direcciones.js"></script>
+<script>
+    (() => {
+        'use strict';
+
+        const formulario = document.getElementById('createUserForm');
+
+        formulario.addEventListener('submit', function(event) {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            // Verificar si las contraseñas coinciden
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+                password.classList.add('is-invalid');
+                confirmPassword.classList.add('is-invalid');
+            } else {
+                password.classList.remove('is-invalid');
+                confirmPassword.classList.remove('is-invalid');
+            }
+
+            // Validación nativa de Bootstrap
+            if (!formulario.checkValidity()) {
+                event.preventDefault();
+                formulario.classList.add('was-validated');
+            }
+        }, false);
+    })();
+</script>

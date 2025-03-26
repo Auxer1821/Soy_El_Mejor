@@ -1,0 +1,222 @@
+<style>
+    h1 {
+        color: var(--main-color);
+        font-weight: 700;
+        margin-bottom: 2rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        position: relative;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.8);
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .card:hover .card-body {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .card-title {
+        color: var(--main-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #666;
+    }
+
+    .community-icon {
+        font-size: 3rem;
+        color: var(--main-color);
+        margin-bottom: 1rem;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover .community-icon {
+        transform: scale(1.2) rotate(15deg);
+    }
+
+    .card-footer {
+        background-color: #fff !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        padding: 0.75rem 1.5rem;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    #filterForm {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-search {
+        background-color: var(--main-color);
+        border: none;
+        border-radius: 50%;
+        width: 5%;
+        height: 5%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-search:hover {
+        background-color: var(--main-color);
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    }
+</style>
+
+{{#partial "contenido"}}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4 fw-bolder">Comunidades</h1>
+        <h3 class="text-center text- mb-4">Busca comunidades cercanas a tu posicion</h3>
+        <form id="filterForm" class="mb-4" method="POST" action="/colaboraciones/donar-a-comunidades">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-center gap-2">
+                <div>
+                    <label for="latitude" class="form-label">Latitud</label>
+                    <input name="lat" type="number" class="form-control" id="latitude" step="any" required>
+                </div>
+                <div>
+                    <label for="longitude" class="form-label">Longitud</label>
+                    <input name="lon" type="number" class="form-control" id="longitude" step="any" required>
+                </div>
+                <div>
+                    <label for="radius" class="form-label">Radio (km)</label>
+                    <input name="radio" type="number" class="form-control" id="radius" min="0" step="any" required>
+                </div>
+
+                <button type="submit" class="btn btn-search" aria-label="Buscar Comunidades">
+                    <span class="d-sm-none"> Buscar</span>
+                    <img src="/img/lupa_busqueda.png" alt="Buscar" style="width:100%; height: 100%;">
+                </button>
+            </div>
+        </form>
+
+        {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{this.error}}
+            </div>
+        {{/if}}
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {{#each comunidades_donantes}}
+                <div class="col">
+                    <div class="card h-100" tabindex="0" role="button" aria-label="Comunidad ${community.name}">
+                        <div class="card-body text-center d-flex flex-column justify-content-between">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#FFB127"
+                                     class="bi bi-house-door-fill community-icon" viewBox="0 0 16 16">
+                                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+                                </svg>
+
+                                <div class="my-3">
+                                    <h5 class="card-title" id="nombreComunidad">{{this.nombre_comunidad}}</h5>
+                                    <p class="card-text" id="direccionComunidad">{{this.direccion}}</p>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#donarModal">Donar una vianda
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="donarModal" tabindex="-1" aria-labelledby="donarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center align-items-center w-100">
+                            <div class="container my-5 shadow p-3 bg-white rounded">
+                                <div class="row">
+                                    <!-- Imagen -->
+                                    <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                        <img src="/img/vianda2.png" alt="Imagen vianda" class="img-fluid">
+                                    </div>
+
+                                    <!-- Formulario -->
+                                    <div class="col-md-6 d-flex justify-content-center align-items-center flex-column">
+                                        <h2 class="fs-3 mb-4 text-center h2"></h2>
+
+                                        <form method="POST" action="/colaboraciones/donar-a-comunidades/vianda" class="w-100" id="donarForm">
+                                            <input name="nombre_comunidad" type="hidden" id="nComunidad" required>
+                                            <input name="direccion_comunidad" type="hidden" id="dComunidad" required>
+
+                                            <div class="form-group mb-3">
+                                                <label>¿Qué comida es?</label>
+                                                <input name="comida" type="text" class="form-control" required>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label>Fecha de caducidad</label>
+                                                <input name="fecha_caducidad" type="date" class="form-control" required>
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label>Calorías</label>
+                                                <input name="calorias" type="number" class="form-control">
+                                            </div>
+
+                                            <div class="form-group mb-4">
+                                                <label>Peso (gramos)</label>
+                                                <input name="peso" type="number" class="form-control">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('donarForm').submit();">Confirmar Donación</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/colaboraciones/donacionVianda/comunidad.js"></script>
+{{/partial}}
+{{> base}}
+

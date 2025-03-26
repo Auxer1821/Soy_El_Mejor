@@ -1,0 +1,301 @@
+<style>
+    .style-group {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container-carga {
+        text-align: center;
+    }
+
+    .custom-file-upload {
+        border: 2px solid var(--second-color);
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: var(--third-color);
+        background-color: var(--second-color);
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .custom-file-upload:hover {
+        border: 2px solid var(--third-color);
+        background-color: transparent;
+    }
+
+    input[type="file"] {
+        display: none; /* Ocultar el input de archivo por defecto */
+    }
+
+    .area-arrastre {
+        border: 2px dashed var(--third-color);
+        border-radius: 5px;
+        padding: 30px;
+        width: 300px;
+        min-height: 150px;
+        margin: 0 auto;
+        color: var(--third-color);
+        transition: background-color 0.3s ease;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        position: relative; /* Permite posicionamiento relativo de vistas previas */
+
+    }
+
+    .area-arrastre:hover{
+        border-color: var(--main-color);
+    }
+
+    .drop-area:hover {
+        background-color: #e8f5e9;
+    }
+
+    .drop-area.dragover {
+        background-color: #c8e6c9;
+        border-color: var(--third-color);
+    }
+
+    .preview-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .preview-item img {
+        max-width: 100px;
+        max-height: 100px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .preview-item span {
+        font-size: 12px;
+        color: #333;
+        display: block;
+        margin-top: 5px;
+    }
+
+    .boton-carga {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: var(--second-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .boton-carga:disabled {
+        background-color: #9e9e9e;
+        cursor: not-allowed;
+    }
+
+    .boton-carga:hover:not(:disabled) {
+        background-color: var(--third-color);
+    }
+
+    .drop-area p {
+        margin-top: 70px; /* Para que el texto esté debajo del ícono */
+    }
+
+    .drop-area:hover {
+        background-color: #e8f5e9;
+    }
+
+    .drop-area.dragover {
+        background-color: #c8e6c9;
+        border-color: #388E3C;
+    }
+
+    .preview-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        text-align: center;
+        position: relative; /* Permitir posicionamiento relativo para el botón de eliminación */
+    }
+
+    .preview-item img {
+        max-width: 100px;
+        max-height: 100px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .preview-item span {
+        font-size: 12px;
+        color: #333;
+        display: block;
+        margin-top: 5px;
+    }
+
+    .delete-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        padding: 0;
+        line-height: 1;
+        transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+        background-color: #e53935;
+    }
+</style>
+
+{{#partial "contenido"}}
+   <div class="d-flex flex-box justify-content-center align-items-start mt-5">
+       {{#if error}}
+           <div class="alert alert-danger" role="alert">
+               {{this.error}}
+           </div>
+       {{/if}}
+
+       {{#if exito}}
+           <div class="alert alert-success" role="alert">
+               {{this.exito}}
+           </div>
+       {{/if}}
+   </div>
+
+    <div class=" d-flex container my-5 mb-5 style-group flex-arow flex-md-row  text-center">
+       <div class="align-items-center w-50">
+           <h2>Realizar migraciones de colaboradores</h2>
+       </div>
+
+       <form id="upload-form" method="post" action="/alta-csv" enctype="multipart/form-data">
+           <div class="container-carga">
+               <label for="file-upload" class="custom-file-upload">
+                   Seleccionar archivo
+               </label>
+               <input type="file" id="file-upload" accept="text/csv" name="file" multiple>
+               <div class="area-arrastre" id="area-arrastre">
+                   <img class="fondo-imagen" src="img/nube_carga.png" alt="Imagen de fondo de arrastre y suelta"/>
+                   Arrastra y suelta un archivo aquí
+               </div>
+               <button type="submit" id="boton-carga" class="boton-carga" disabled>Enviar archivo</button>
+           </div>
+       </form>
+   </div>
+
+   <script>
+       const dropArea = document.getElementById('area-arrastre');
+       const uploadButton = document.getElementById('boton-carga');
+       const fileInput = document.getElementById('file-upload');
+       let uploadedFiles = [];  // Almacena los archivos cargados
+
+       // Manejo del área de arrastre
+       dropArea.addEventListener('dragover', (event) => {
+           event.preventDefault();
+           dropArea.classList.add('dragover');
+       });
+
+       dropArea.addEventListener('dragleave', () => {
+           dropArea.classList.remove('dragover');
+       });
+
+       dropArea.addEventListener('drop', (event) => {
+           event.preventDefault();
+           dropArea.classList.remove('dragover');
+
+           const files = Array.from(event.dataTransfer.files);
+           handleFiles(files);
+       });
+
+       // Manejo del botón de selección de archivos
+       fileInput.addEventListener('change', (event) => {
+           const files = Array.from(event.target.files);
+           handleFiles(files);
+       });
+
+       function handleFiles(files) {
+           const csvFiles = files.filter(file => file.type === 'text/csv'); // Filtrar solo archivos .csv
+
+           if (csvFiles.length > 0) {
+               uploadedFiles = csvFiles; // Guardar archivos cargados
+               updateDropArea(); // Actualizar el área de arrastre con las vistas previas
+               updateUploadButtonState();
+           } else {
+               alert('Solo se permiten archivos CSV.');
+           }
+       }
+
+       function updateDropArea() {
+           clearDropAreaPreviews(); // Limpiar las vistas previas anteriores
+
+           uploadedFiles.forEach((file, index) => {
+               // Mostrar un ícono para los archivos CSV
+               const icon = document.createElement('img');
+               icon.src = '/img/csv_image.png'; // Nueva imagen para archivos CSV
+               createPreviewElement(icon, file.name, index);
+           });
+       }
+
+       function createPreviewElement(element, filename, index) {
+           const container = document.createElement('div');
+           container.classList.add('preview-item');
+
+           container.appendChild(element);
+
+           const span = document.createElement('span');
+           span.textContent = filename;
+           container.appendChild(span);
+
+           // Botón de eliminar
+           const deleteButton = document.createElement('button');
+           deleteButton.classList.add('delete-button');
+           deleteButton.textContent = 'x';
+           deleteButton.onclick = () => removeFile(index); // Eliminar archivo al hacer clic
+           container.appendChild(deleteButton);
+
+           dropArea.appendChild(container);
+       }
+
+       function removeFile(index) {
+           uploadedFiles.splice(index, 1); // Eliminar archivo del array
+           updateDropArea(); // Actualizar el área de arrastre con las vistas previas
+           updateUploadButtonState();
+       }
+
+       function clearDropAreaPreviews() {
+           // Limpiar solo las vistas previas, no el contenido principal (texto e imagen de fondo)
+           const previews = dropArea.querySelectorAll('.preview-item');
+           previews.forEach(preview => preview.remove());
+       }
+
+       function updateUploadButtonState() {
+           uploadButton.disabled = uploadedFiles.length === 0; // Habilita o deshabilita el botón según si hay archivos cargados
+       }
+   </script>
+{{/partial}}
+{{>base}}

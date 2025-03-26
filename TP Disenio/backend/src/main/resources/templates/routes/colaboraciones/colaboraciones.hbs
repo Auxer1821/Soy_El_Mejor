@@ -1,0 +1,129 @@
+<style>
+    .button-container {
+        background: white;
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .option {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .image-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .image {
+        width: 206px;
+        height: 206px;
+        transition: transform 0.2s ease;  /* Suaviza la transformación */
+    }
+
+    /* Efecto al pasar el mouse por encima */
+    .image-button:hover .image {
+        transform: scale(0.95); /* Reduce la imagen al 95% de su tamaño original */
+    }
+
+    /* Efecto de clic continuo (presionado) */
+    .image-button:active .image {
+        transform: scale(0.85); /* Reduce más la imagen cuando se hace clic */
+    }
+
+    .label {
+        width: 191px;
+        text-align: center;
+        color: var(--third-color);
+        font-size: 20px;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        word-wrap: break-word;
+    }
+
+    /* Ajustes específicos para el título en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .d-flex.flex-md-row {
+            flex-direction: column; /* Cambia la dirección del flex a columna en pantallas pequeñas */
+        }
+
+        .container {
+            margin-top: 2rem; /* Agrega un margen superior para separar el título del header */
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{{#partial "contenido"}}
+    <div class="d-flex justify-content-center align-items-center flex-grow-1 w-100 min-vh-100">
+        <div class="d-flex align-items-center justify-content-center text-center w-50">
+
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="button-container d-flex flex-md-row">
+                    {{#ifCond user.rol 'HUMANA'}}
+                        <div class="option">
+                            <a href="/colaboraciones/registrar-vulnerable" class="image-button">
+                                <img src="/img/registro_vulnerable.png" alt="Registrar Persona Vulnerable" class="image">
+                            </a>
+                            <div class="label">
+                                Registrar Persona Vulnerable
+                            </div>
+                        </div>
+
+                        <div class="option">
+                            <a href="/colaboraciones/donar-vianda" class="image-button">
+                                <img src="/img/vianda.png" alt="Donar Vianda" class="image">
+                            </a>
+                            <div class="label">
+                                Donar Vianda
+                            </div>
+                        </div>
+
+                        <div class="option">
+                            <a href="/colaboraciones/distribuir-viandas" class="image-button">
+                                <img src="/img/distribuir.png" alt="Distribuir Viandas" class="image">
+                            </a>
+                            <div class="label">
+                                Distribuir Viandas
+                            </div>
+                        </div>
+                    {{else ifCond user.rol 'JURIDICA'}}
+                        <div class="option">
+                            <a href="/colaboraciones/encargarse-de-heladera" class="image-button">
+                                <img src="/img/heladera.png" alt="Encargarse de Heladera" class="image">
+                            </a>
+                            <div class="label">
+                                Colocar una Heladera
+                            </div>
+                        </div>
+
+                        <div class="option">
+                            <a href="/colaboraciones/ofrecer-beneficio" class="image-button">
+                                <img src="/img/beneficios.png" alt="Ofrecer Beneficios" class="image">
+                            </a>
+                            <div class="label">
+                                Ofrecer Beneficios
+                            </div>
+                        </div>
+                    {{/ifCond}}
+
+                    <div class="option">
+                        <a href="/colaboraciones/donar-dinero" class="image-button">
+                            <img src="/img/plata.png" alt="Donar Dinero" class="image">
+                        </a>
+                        <div class="label">
+                            Donar Dinero
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{>base}}
