@@ -1,0 +1,14 @@
+:root {
+    --main-color: #FFB127;
+    --second-color: #6EEFD6;
+    --third-color: #063229;
+}
+
+.points-icon {
+    width: 5%;
+}
+
+.points-color {
+    color: var(--third-color);
+    font-weight: bold;
+}

@@ -1,0 +1,82 @@
+/* Estilo general para el formulario */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+.form-label {
+    margin-bottom: 10px;
+}
+
+.form-control, .form-select {
+    margin-bottom: 10px;
+}
+
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+/* Añadir estilo a los campos dinámicos */
+.dynamic-children {
+    margin-top: 10px;
+}
+
+
+.image-button-add {
+    width: 110px;
+    height: 110px;
+    transition: transform 0.2s ease;
+}
+
+.image-button-add:hover {
+    transform: scale(0.95);
+}
+
+.image-button-add:active {
+    transform: scale(0.85);
+}
+
+
+/* Estilo general para el botón con imagen y texto */
+.btn-add-children {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido */
+}
+
+/* Espacio entre la imagen y el texto */
+.btn-add-children span {
+    margin-right: 15px; /* Ajusta el margen a tu gusto */
+}
+
+
+
+.image-button-accept {
+    width: 100%;
+    transition: transform 0.2s ease;
+}
+
+.image-button-accept:hover {
+    transform: scale(0.95);
+}
+
+.image-button-accept:active {
+    transform: scale(0.85);
+}
+
+.image-button-regresar {
+    width: 58px;
+    height: 58px;
+    transform: scaleX(-1);
+    transition: transform 0.2s ease;
+}
+
+.image-button-regresar:hover {
+    transform: scaleX(-1) scale(0.95);
+}
+
+.image-button-regresar:active {
+    transform: scaleX(-1) scale(0.85);
+}
+

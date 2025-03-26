@@ -1,0 +1,17 @@
+:root {
+    --main-color: #FFB127;
+    --second-color: #6EEFD6;
+    --third-color: #063229;
+}
+
+.input-file::file-selector-button {
+    background-color: transparent;
+    border: none;
+}
+
+.input-file {
+    padding: 8rem;
+    border: 3px solid var(--main-color);
+    border-style: dashed;
+    border-radius: 1%;
+}

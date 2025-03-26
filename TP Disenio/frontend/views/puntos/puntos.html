@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../styles/start.css"/>
+    <link rel="stylesheet" href="../../styles/sesionIniciada.css"/>
+    <link rel="stylesheet" href="styles.css"/>
+    
+</head>
+<body>
+    <header class="bg-header flex-shrink-0">
+        <nav class="navbar navbar-expand-md navbar-light p-2">
+            <div class="w-100 d-flex justify-content-around">
+                <!-- Logo -->
+                <a class="logo" href="../start/start.html">
+                    <img class="rounded-4 img-fluid" src="../../resources/logo.png" alt="Logo" />
+                </a>
+
+                <!-- Secondary buttons (links) -->
+                <div class="menu d-flex ms-3">
+                    <div class="menu-item">
+                        <a href="../start/sesionIniciada.html" class="nav-link">Home</a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="donacionesHumana.html" class="nav-link">Colaborar</a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="../map/mapa.html" class="nav-link">Heladeras</a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="../beneficios/beneficios.html" class="nav-link">Beneficios</a>
+                    </div>
+
+
+                </div>
+
+                <!-- User dropdown -->
+                <div class="btn-profile btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img class="w-75" src="../../resources/usuario_boton_desplegable.png" alt="Persona">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end custom-dropdown font-family-dropdown wide-dropdown">
+                        <!-- Aquí se mostrará el nombre de usuario -->
+                        <h5 id="username-display" class="text-center">User name</h5>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img class="menu-image" src="../../resources/usuario_boton_desplegable.png" />
+                            <a class="dropdown-item" href="#">Perfil</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img class="ms-2 menu-image" src="../../resources/colaboracion.png" />
+                            <a class="dropdown-item" href="#">Mis colaboraciones</a>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img class="ms-2 menu-image" src="../../resources/puntos_boton_desplegable.png" />
+                            <a class="dropdown-item" href="#">Mis puntos</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img class="menu-image" src="../../resources/cerrar_sesion_menu_desplegable.png" />
+                            <a class="dropdown-item" href="../start/start.html">Cerrar sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container d-flex flex-column align-items-center justify-content-center min-vh-100 mb-5">
+
+        <div class="d-flex align-items-center justify-content-around m-5">
+            <div class="input-group m-3">
+                <input type="date" class="form-control" placeholder="Fecha Inicio">
+            </div>
+            <div class="input-group m-3">
+                <input type="date" class="form-control" placeholder="Fecha Fin">
+            </div>
+            <div class="input-group m-3">
+                <select class="form-select" id="contactMethod1" name="contactMethod[]" data-index="1" required>
+                    <option value="">Seleccione...</option>
+                    <option value="donacion_vianda">Donacion Vianda</option>
+                    <option value="donacion_dinero">Donacion dinero</option>
+                    <option value="registro_persona_vulnerable">Registro persona vulnerable</option>
+                    <option value="distribuir_vianda">Distribuir vianda</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center w-75">
+            <p class="h3 mb-5 border-bottom w-100 text-center">Puntos actuales: <span class="points-color">5000</span></h2>
+        </div>
+
+        <div class="h-75 w-100 d-flex flex-column align-items-center">
+            
+            <div class="d-flex align-items-center justify-content-around w-75 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <div class="w-25">
+                    <img class="img-fluid" src="../../resources/heladera_puntos.png">
+                </div>
+                <div>
+                    <p class="h3">Puntos ganados por distribuir viandas</p>
+                    <p>Has distribuido 5 viandas el dia 25/09/2024</p>
+
+                    <div class="d-flex align-items-end justify-content-end flex-column">
+                        <div class="d-flex align-items-end justify-content-end">
+                            <img class="points-icon img-fluid" src="../../resources/entradaPuntos.png">
+                            <img class="points-icon img-fluid" src="../../resources/puntos.png"/>
+                            <p class="h6">1500</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-around w-75 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <div class="w-25">
+                    <img class="img-fluid" src="../../resources/beneficiosVerde.png">
+                </div>
+                <div>
+                    <p class="h3">Puntos canjeados por un benefecio</p>
+                    <p>Has canjeado un set de mate el dia 01/09/2024</p>
+
+                    <div class="d-flex align-items-end justify-content-end flex-column">
+                        <div class="d-flex align-items-end justify-content-end">
+                            <img class="points-icon img-fluid" src="../../resources/perdidaPuntos.png">
+                            <img class="points-icon img-fluid" src="../../resources/puntos.png"/>
+                            <p class="h6">1500</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-around w-75 shadow p-3 mb-5 bg-body-tertiary rounded">
+                <div class="w-25">
+                    <img class="img-fluid" src="../../resources/registrar_vulnerable_puntos.png">
+                </div>
+                <div>
+                    <p class="h3">Puntos ganados por refistro de persona </p>
+                    <p>Has resgistrado una persona el dia 01/09/2024</p>
+
+                    <div class="d-flex align-items-end justify-content-end flex-column">
+                        <div class="d-flex align-items-end justify-content-end">
+                            <img class="points-icon img-fluid" src="../../resources/entradaPuntos.png">
+                            <img class="points-icon img-fluid" src="../../resources/puntos.png">
+                            <p class="h6">1500</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+
+
+
+    <footer class="w-100 bg-footer text-center position-relative mt-auto">
+        <div>
+        <p class="h4">Solidarity Fridge - copyright © 2024 all rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+</body>
+</html>

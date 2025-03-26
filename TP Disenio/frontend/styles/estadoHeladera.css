@@ -1,0 +1,30 @@
+:root {
+    --main-color: #FFB127;
+    --second-color: #6EEFD6;
+    --third-color: #063229;
+
+        /* Extraer componentes RGB del color sólido */
+        --second-color-r: 110;
+        --second-color-g: 239;
+        --second-color-b: 214;
+}
+
+table th.tabla-th-transparente {
+    background-color: rgba(var(--second-color-r), var(--second-color-g), var(--second-color-b), 0.2); /* Fondo con transparencia al 20% */
+}
+
+.btn-outline-info {
+    background-color: none;
+    border: none;
+    color: none;
+}
+
+.btn-outline-info:hover {
+    background-color: none;
+    color: none;
+    border: none;
+}
+
+.subrayar {
+    text-decoration: underline; /* Aplica subrayado al texto */
+}

@@ -1,0 +1,11 @@
+Tipo,Documento,Nombre,Apellido,Mail,Fecha de colaboración,Forma de colaboración,Cantidad
+LC,1234567890,Juan,Perez,juan@example.com,05/01/2024,DINERO,100
+LE,9876543210,Maria,Lopez,maria@example.com,10/02/2024,DINERO,50
+DNI,4567890123,Pedro,Gonzalez,pedro@example.com,15/03/2024,DONACION_VIANDAS,20
+LC,7890123456,Laura,Rodriguez,laura@example.com,20/04/2024,REDISTRIBUCION_VIANDAS,30
+LE,2345678901,Carlos,Martinez,carlos@example.com,25/05/2024,ENTREGA_TARJETAS,40
+DNI,9012345678,Sofia,Hernandez,sofia@example.com,30/06/2024,DINERO,60
+LC,3456789012,Diego,Gomez,diego@example.com,05/07/2024,DONACION_VIANDAS,70
+LE,6789012345,Ana,Fernandez,ana@example.com,10/08/2024,REDISTRIBUCION_VIANDAS,80
+DNI,1234567890,Lucas,Diaz,lucas@example.com,15/09/2024,ENTREGA_TARJETAS,90
+LC,8901234567,Valeria,Alvarez,valeria@example.com,20/10/2024,DINERO,110

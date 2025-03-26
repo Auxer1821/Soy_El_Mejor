@@ -1,0 +1,162 @@
+:root {
+    --main-color: #FFB127;
+    --second-color: #6EEFD6;
+    --third-color: #063229;
+}
+
+.bg-header {
+    background-color: var(--main-color);
+    padding-top: 2rem; 
+    padding-bottom: 2rem;
+}
+
+.bg-footer {
+    background-color: var(--main-color);
+    padding-top: 2rem; 
+  padding-bottom: 2rem; 
+}
+
+.image-size {
+    max-width: 5%;
+}
+
+.btn-profile {
+    width: 5%;
+}
+
+.logo {
+    width: 5%;
+}
+
+.btn-primary {
+    background-color: var(--second-color);
+    border: none;
+    color: var(--third-color);
+}
+
+.modal-bg {
+    background-color: #0632299c;
+}
+
+.btn-primary:focus,
+.btn-primary:focus:active,
+.btn-primary:hover {
+    background-color: transparent;
+    border: 1px solid var(--third-color);
+    color: var(--third-color);
+}
+
+.btn-outline-info {
+    background-color: transparent;
+    border: 1px solid var(--third-color);
+    color: var(--third-color);
+}
+
+.btn-outline-info:hover {
+    background-color: var(--second-color);
+    color: var(--third-color);
+    border: none;
+}
+
+.dropdown-menu-end{
+    background-color: var(--second-color);
+}
+
+.font-family-dropdown{
+    font-size: 16px;
+    font-family: Calibri;
+    font-weight: 400;
+    word-wrap: break-word
+}
+
+.custom-dropdown .dropdown-item {
+    border: 2px solid transparent; /* Borde transparente por defecto */
+    padding: 8px 16px; /* Ajusta el padding si es necesario */
+    transition: border-color 0.3s ease; /* Transición suave para el cambio de borde */
+}
+
+
+.custom-dropdown .dropdown-item:focus,
+.custom-dropdown .dropdown-item:hover {
+    border-color: var(--third-color); /* Color del borde cuando se pasa el cursor */
+    background-color: var(--second-color);
+}
+
+
+
+.wide-dropdown {
+    width: 250px; /* Ajusta el ancho a tus necesidades */
+}
+
+.menu-image {
+    width: 20%;
+}
+
+
+.menu {
+    height: 64px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-item {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.menu .nav-link:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último enlace */
+}
+
+.menu .nav-link:hover {
+    text-decoration: underline; /* Subrayado al pasar el mouse */
+}
+
+.container-fluid {
+    width: 98%;
+    height: 100%;
+    padding: 1px 20px;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 48px;
+}
+
+
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .d-flex.flex-md-row {
+        flex-direction: column; /* Cambia la dirección del flex a columna en pantallas pequeñas */
+    }
+
+    .text-container {
+        padding: 1rem; /* Añade padding para evitar que el texto toque los bordes */
+        overflow-wrap: break-word; /* Ajusta el texto largo */
+        word-break: break-word; /* Evita el desbordamiento de texto */
+    }
+
+    .image-size {
+        max-width: 16%; /* Ajusta el tamaño máximo de la imagen */
+    }
+    
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        border: none;
+    }
+    
+    
+}

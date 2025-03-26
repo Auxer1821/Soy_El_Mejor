@@ -1,0 +1,43 @@
+
+:root {
+    --main-color: #FFB127;
+    --second-color: #6EEFD6;
+    --third-color: #063229;
+}
+
+.separator-children {
+    border-top: 1px solid var(--main-color);
+}
+
+.image-button-add {
+    width: 110px;
+    height: 110px;
+    transition: transform 0.2s ease;
+}
+
+.image-button-add:hover {
+    transform: scale(0.95);
+}
+
+.image-button-add:active {
+    transform: scale(0.85);
+}
+
+.btn-add-children:focus {
+    border: none;
+}
+
+
+.image-button-accept {
+    width: 58px;
+    height: 58px;
+    transition: transform 0.2s ease;
+}
+
+.image-button-accept:hover {
+    transform: scale(0.95);
+}
+
+.image-button-accept:active {
+    transform: scale(0.85);
+}

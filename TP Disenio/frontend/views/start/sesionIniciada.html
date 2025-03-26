@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solidarity Fridge - Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="../../styles/sesionIniciada.css" rel="stylesheet" />
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+  <header class="bg-header flex-shrink-0">
+    <nav class="navbar navbar-expand-md navbar-light p-2">
+        <div class="w-100 d-flex justify-content-around">
+            <!-- Logo -->
+            <a class="logo" href="../start/start.html">
+                <img class="rounded-4 img-fluid" src="../../resources/logo.png" alt="Logo" />
+            </a>
+
+            <!-- Secondary buttons (links) -->
+            <div class="menu d-flex ms-3">
+                <div class="menu-item">
+                    <a href="../start/sesionIniciada.html" class="nav-link">Home</a>
+                </div>
+                <div class="menu-item">
+                    <a href="../donaciones/donacionesHumana.html" class="nav-link">Colaborar</a>
+                </div>
+                <div class="menu-item">
+                    <a href="../map/mapa.html" class="nav-link">Heladeras</a>
+                </div>
+                <div class="menu-item">
+                    <a href="../beneficios/beneficios.html" class="nav-link">Beneficios</a>
+                </div>
+
+
+            </div>
+
+            <!-- User dropdown -->
+            <div class="btn-profile btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img class="w-75" src="../../resources/usuario_boton_desplegable.png" alt="Persona">
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end custom-dropdown font-family-dropdown wide-dropdown">
+                    <!-- Aquí se mostrará el nombre de usuario -->
+                    <h5 id="username-display" class="text-center">User name</h5>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img class="menu-image" src="../../resources/usuario_boton_desplegable.png" />
+                        <a class="dropdown-item" href="#">Perfil</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img class="ms-2 menu-image" src="../../resources/colaboracion.png" />
+                        <a class="dropdown-item" href="#">Mis colaboraciones</a>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img class="ms-2 menu-image" src="../../resources/puntos_boton_desplegable.png" />
+                        <a class="dropdown-item" href="../puntos/puntos.html">Mis puntos</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <img class="menu-image" src="../../resources/cerrar_sesion_menu_desplegable.png" />
+                        <a class="dropdown-item" href="../start/start.html">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+  <script>
+    // Recupera el nombre de usuario del localStorage
+    document.addEventListener("DOMContentLoaded", function () {
+      const username = localStorage.getItem('username') || 'User name'; // Si no hay usuario, muestra "User name" por defecto
+      document.getElementById('username-display').textContent = username;
+    });
+  </script>
+
+  <main class="d-flex justify-content-center align-items-center flex-grow-1 min-vh-100">
+    <div class="d-flex flex-md-row align-items-center text-center w-50">
+      <img src="../../resources/heladeraInicio.png" class="mb-3 img-fluid" />
+      <div>
+        <h1>Solidarity Fridge</h1>
+        <p>Somos una ONG que se encarga de la colocación de heladeras en distintos lugares estratégicos de nuestro pais
+          para mejorar el acceso a los alimentos para personas con vulnerabilidad alimentaria.</p>
+      </div>
+    </div>
+  </main>
+
+
+
+
+  <footer>
+    <div class="w-100 bg-footer text-center flex-shrink-0">
+      <p class="h6">Solidarity Fridge - copyright © 2024 all rights reserved</p>
+    </div>
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
